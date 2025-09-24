@@ -78,6 +78,7 @@ Message {
 |             | POST   | /api/auth/register          | Create a new user                                                | X             |
 |             | POST   | /api/auth/login             | Log in                                                           | X             |
 |             | GET    | /api/auth/login             | Re-fetch user info                                               | Yes           |
+|             | DELETE | /api/auth/logout            | Delete current user session                                      | Yes           |
 | **Users**   |
 |             | GET    | /api/users                  | Get list of users that are not followed or with pending requests | Yes           |
 | **Follows** |
