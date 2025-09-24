@@ -80,9 +80,9 @@ Message {
 |             | GET    | /api/auth/login             | Re-fetch user info                                               | Yes           |
 | **Users**   |
 |             | GET    | /api/users                  | Get list of users that are not followed or with pending requests | Yes           |
-|             | POST   | /api/users/:userId/follow   | Send follow request or accept follow request                     | Yes           |
-|             | DELETE | /api/users/:userId/follow   | Cancel follow request or unfollow                                | Yes           |
 | **Follows** |
+|             | POST   | /api/follow/:userId         | Send follow request or accept follow request                     | Yes           |
+|             | DELETE | /api/follow/:userId         | Cancel follow request or unfollow                                | Yes           |
 |             | GET    | /api/following              | Get list of current user's followed users                        | Yes           |
 |             | GET    | /api/followers              | Get list of current user's followers                             | Yes           |
 |             | GET    | /api/following/requests     | Get list of current user's pending follow requests               | Yes           |
