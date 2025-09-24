@@ -1,0 +1,109 @@
+# Spaces Project Brief
+
+## 1. Project Overview
+
+**Goal**: Build Spaces, a social media site where users can interact with others and create their custom feeds.
+
+## 2. Core Features (MVP)
+
+### Must-have:
+
+- User registration and login via username and password _[a]_
+- Users can send follow requests to other users
+- Users can create text posts
+- Users can like posts
+- Users can comment on posts
+- Posts should display post content, author, comments, and likes
+- Index page for posts showing all posts from current user and followed users _[b]_
+- Users can create a profile with their personal details and a profile picture _[c]_
+- User's profile page should contain profile information, profile photo, and posts
+- Index page for users, which shows all users and buttons for sending follow requests or indication of pending follow request
+- Users can create custom feeds _[b]_
+
+### Nice-to-have:
+
+- User registration and login via github account _[a]_
+- Use github account profile picture _[c]_
+- Send messages to other users
+
+## 3. Data Model
+
+### Must-have:
+
+```
+User {
+  id, username, email, passwordHash, createdAt, profileId(Profile.id),
+}
+
+Profile {
+  id, userId(User.id), displayName,
+  followedUsers[User], followers[User],
+  posts[Post], comments[Comment], feeds[Feed],
+  picture?, firstName?, lastName?, birthDate?, bio?, sex?, location?,
+}
+
+Post {
+  id, authorId(Profile.userId), content, createdAt, likes[User], comments[Comment],
+}
+
+Comment {
+  id, authorId(Profile.userId), content, createdAt, likes[User],
+}
+
+Feed {
+  id, name, authorId(Profile.userId), users[User],
+}
+```
+
+### Nice-to-have:
+
+**Messages**
+
+```
+Profile.extend {
+  messages[Message],
+}
+
+Message {
+  id, senderId(User.id), receiverId(User.id), content, createdAt,
+}
+```
+
+## 4. API Endpoints
+
+|             | Method | Route                       | Description                                                      | Auth Required |
+| ----------- | ------ | --------------------------- | ---------------------------------------------------------------- | ------------- |
+| **Auth**    |
+|             | POST   | /api/auth/register          | Create a new user                                                | X             |
+|             | POST   | /api/auth/login             | Log in                                                           | X             |
+|             | GET    | /api/auth/login             | Re-fetch user info                                               | Yes           |
+| **Users**   |
+|             | GET    | /api/users                  | Get list of users that are not followed or with pending requests | Yes           |
+|             | POST   | /api/users/:userId/follow   | Send follow request or accept follow request                     | Yes           |
+| **Post**    |
+|             | GET    | /api/posts                  | Get list of posts from current user and followed users           | Yes           |
+|             | POST   | /api/posts                  | Create a new post                                                | Yes           |
+|             | GET    | /api/posts/:postId          | Get a post                                                       | Yes           |
+|             | POST   | /api/posts/:postId/like     | Like a post                                                      | Yes           |
+|             | POST   | /api/posts/:postId/comments | Create a comment on a post                                       | Yes           |
+| **Profile** |
+|             | GET    | /api/profile                | Get current user's profile                                       | Yes           |
+|             | GET    | /api/profile/:userId        | Get specific user's profile                                      | Yes           |
+| **Feeds**   |
+|             | GET    | /api/feed                   | Get list of posts from current user and followed users           | Yes           |
+|             | POST   | /api/feed                   | Create custom feed                                               | Yes           |
+|             | GET    | /api/feed/:feedId           | Get posts from custom feed                                       | Yes           |
+|             | PATCH  | /api/feed/:feedId           | Update custom feed                                               | Yes           |
+|             | DELETE | /api/feed/:feedId           | Delete custom feed                                               | Yes           |
+
+## 5. Architecture & Tech Stack
+
+- **Backend Framework**: Express
+- **Database**: PostgreSQL with Prisma
+- **Frontend**: React
+
+## 6. Stretch Goals
+
+- Deploy online
+- Add tests
+- Pagination
