@@ -1,0 +1,37 @@
+{
+  "name": "spaces-server",
+  "version": "1.0.0",
+  "description": "Spaces is a social media site where users can interact with others and create customizable feeds.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch app.js",
+    "start": "node app.js",
+    "pw": "npx prettier . --write",
+    "lint": "npx eslint app.js config/ controllers/ db/ routes/",
+    "di": "node db/initScript.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "@quixo3/prisma-session-store": "^3.1.13",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "eslint": "^9.36.0",
+    "globals": "^16.4.0",
+    "prettier": "3.6.2",
+    "prisma": "^6.16.2"
+  }
+}
