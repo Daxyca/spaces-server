@@ -10,7 +10,9 @@ export async function profileGet(req, res) {
 }
 
 export async function profilePatch(req, res) {
-  req.body.birthDate = new Date(req.body.birthDate);
+  req.body.birthDate = req.body.birthDate
+    ? new Date(req.body.birthDate)
+    : undefined;
   const profile = await profileQueries.updateProfile(req.user.id, req.body);
   res.json({ update: true, message: "Profile updated successfully.", profile });
 }
