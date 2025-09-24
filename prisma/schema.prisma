@@ -23,8 +23,8 @@ model Session {
 
 model User {
   id           String   @id @default(cuid())
-  username     String
-  email        String
+  username     String   @unique
+  email        String   @unique
   passwordHash String
   createdAt    DateTime @default(now())
   profile      Profile?
@@ -32,7 +32,7 @@ model User {
 
 model Follow {
   id          String       @id @default(cuid())
-  status      FollowStatus @default(PENDING)
+  status      FollowStatus @default(Pending)
   createdAt   DateTime     @default(now())
   following   Profile      @relation("Following", fields: [followingId], references: [id])
   followingId String
@@ -41,30 +41,35 @@ model Follow {
 }
 
 enum FollowStatus {
-  PENDING
-  ACCEPTED
+  Pending
+  Accepted
 }
 
 model Profile {
-  id            String    @id @default(cuid())
-  user          User      @relation(fields: [userId], references: [id])
-  userId        String    @unique
+  id            String      @id @default(cuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String      @unique
   displayName   String
-  posts         Post[]    @relation("Author")
-  comments      Comment[] @relation("Author")
-  feedsCreated  Feed[]    @relation("Author")
+  posts         Post[]      @relation("Author")
+  comments      Comment[]   @relation("Author")
+  feedsCreated  Feed[]      @relation("Author")
   feedsIncluded Feed[]
-  likedPosts    Post[]    @relation("Likes")
-  likedComments Comment[] @relation("Likes")
-  following     Follow[]  @relation("Following")
-  follower      Follow[]  @relation("Followers")
+  likedPosts    Post[]      @relation("Likes")
+  likedComments Comment[]   @relation("Likes")
+  following     Follow[]    @relation("Following")
+  follower      Follow[]    @relation("Followers")
   picture       String?
   firstName     String?
   lastName      String?
-  birthDate     String?
+  birthDate     DateTime?
   bio           String?
-  sex           String?
+  sexAtBirth    SexAtBirth?
   location      String?
+}
+
+enum SexAtBirth {
+  Male
+  Female
 }
 
 model Post {
