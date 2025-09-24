@@ -37,17 +37,18 @@ User {
 
 Profile {
   id, userId(User.id), displayName,
-  followedUsers[User], followers[User],
+  followedUsers[Profile], followers[Profile],
+  pendingFollowing[Profile], pendingFollowers[Profile],
   posts[Post], comments[Comment], feeds[Feed],
   picture?, firstName?, lastName?, birthDate?, bio?, sex?, location?,
 }
 
 Post {
-  id, authorId(Profile.userId), content, createdAt, likes[User], comments[Comment],
+  id, authorId(Profile.id), content, createdAt, likes[User], comments[Comment],
 }
 
 Comment {
-  id, authorId(Profile.userId), content, createdAt, likes[User],
+  id, authorId(Profile.id), content, createdAt, likes[User],
 }
 
 Feed {
@@ -80,6 +81,11 @@ Message {
 | **Users**   |
 |             | GET    | /api/users                  | Get list of users that are not followed or with pending requests | Yes           |
 |             | POST   | /api/users/:userId/follow   | Send follow request or accept follow request                     | Yes           |
+|             | DELETE | /api/users/:userId/follow   | Cancel follow request or unfollow                                | Yes           |
+| **Follows** |
+|             | GET    | /api/following              | Get list of current user's followed users                        | Yes           |
+|             | GET    | /api/followers              | Get list of current user's followers                             | Yes           |
+|             | GET    | /api/following/requests     | Get list of current user's pending follow requests               | Yes           |
 | **Post**    |
 |             | GET    | /api/posts                  | Get list of posts from current user and followed users           | Yes           |
 |             | POST   | /api/posts                  | Create a new post                                                | Yes           |
@@ -88,13 +94,14 @@ Message {
 |             | POST   | /api/posts/:postId/comments | Create a comment on a post                                       | Yes           |
 | **Profile** |
 |             | GET    | /api/profile                | Get current user's profile                                       | Yes           |
+|             | PATCH  | /api/profile                | Update current user's profile                                    | Yes           |
 |             | GET    | /api/profile/:userId        | Get specific user's profile                                      | Yes           |
 | **Feeds**   |
-|             | GET    | /api/feed                   | Get list of posts from current user and followed users           | Yes           |
-|             | POST   | /api/feed                   | Create custom feed                                               | Yes           |
-|             | GET    | /api/feed/:feedId           | Get posts from custom feed                                       | Yes           |
-|             | PATCH  | /api/feed/:feedId           | Update custom feed                                               | Yes           |
-|             | DELETE | /api/feed/:feedId           | Delete custom feed                                               | Yes           |
+|             | GET    | /api/feeds                  | Get list of feeds                                                | Yes           |
+|             | POST   | /api/feeds                  | Create custom feed                                               | Yes           |
+|             | GET    | /api/feeds/:feedId          | Get posts from custom feed                                       | Yes           |
+|             | PATCH  | /api/feeds/:feedId          | Update custom feed                                               | Yes           |
+|             | DELETE | /api/feeds/:feedId          | Delete custom feed                                               | Yes           |
 
 ## 5. Architecture & Tech Stack
 
