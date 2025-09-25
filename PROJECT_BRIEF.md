@@ -88,7 +88,8 @@ Message {
 | **Users**   |
 |             | GET    | /api/users                  | Get list of users that are not followed or with pending requests | Yes           |
 | **Follows** |
-|             | POST   | /api/follow/:userId         | Send follow request or accept follow request                     | Yes           |
+|             | POST   | /api/follow/:userId         | Send follow request                                              | Yes           |
+|             | PATCH  | /api/follow/:userId         | Accept follow request                                            | Yes           |
 |             | DELETE | /api/follow/:userId         | Cancel follow request or unfollow                                | Yes           |
 |             | GET    | /api/follow/following       | Get list of current user's followed users                        | Yes           |
 |             | GET    | /api/follow/followers       | Get list of current user's followers                             | Yes           |
