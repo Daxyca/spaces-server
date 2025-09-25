@@ -90,9 +90,9 @@ Message {
 | **Follows** |
 |             | POST   | /api/follow/:userId         | Send follow request or accept follow request                     | Yes           |
 |             | DELETE | /api/follow/:userId         | Cancel follow request or unfollow                                | Yes           |
-|             | GET    | /api/following              | Get list of current user's followed users                        | Yes           |
-|             | GET    | /api/followers              | Get list of current user's followers                             | Yes           |
-|             | GET    | /api/following/requests     | Get list of current user's pending follow requests               | Yes           |
+|             | GET    | /api/follow/following       | Get list of current user's followed users                        | Yes           |
+|             | GET    | /api/follow/followers       | Get list of current user's followers                             | Yes           |
+|             | GET    | /api/follow/requests        | Get list of current user's pending follow requests               | Yes           |
 | **Post**    |
 |             | GET    | /api/posts                  | Get list of posts from current user and followed users           | Yes           |
 |             | POST   | /api/posts                  | Create a new post                                                | Yes           |
