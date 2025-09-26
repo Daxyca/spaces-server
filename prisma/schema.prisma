@@ -57,7 +57,7 @@ model Profile {
   likedPosts    Post[]      @relation("Likes")
   likedComments Comment[]   @relation("Likes")
   following     Follow[]    @relation("Following")
-  follower      Follow[]    @relation("Followers")
+  followers     Follow[]    @relation("Followers")
   picture       String?
   firstName     String?
   lastName      String?
