@@ -10,7 +10,7 @@ export async function authRegisterPost(req, res) {
   const profile = await profileQueries.createProfile(user.id, {
     displayName: user.username,
   });
-  res.json({ register: true, user });
+  res.status(201).json({ data: user });
 }
 
 export function authLoginGet(req, res) {
