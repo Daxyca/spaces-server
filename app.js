@@ -14,7 +14,7 @@ export const app = express();
 const __dirname = process.cwd();
 const assetsPath = path.join(__dirname, "public");
 const sessionStore = new PrismaSessionStore(prisma, {
-  checkPeriod: 2 * 60 * 1000,
+  checkPeriod: process.env.NODE_ENV === "test" ? undefined : 2 * 60 * 1000,
   dbRecordIdIsSessionId: true,
   dbRecordIdFunction: undefined,
 });
@@ -25,7 +25,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-if (process.env.NODE_ENV !== "development") {
+if (process.env.NODE_ENV === "development") {
   app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
