@@ -25,13 +25,14 @@ export function authLoginPost(req, res, next) {
   passport.authenticate("local", (err, user, info, status) => {
     if (err) return next(err);
     if (!user) {
-      return res
-        .status(401)
-        .json({ login: false, message: "Wrong credentials!" });
+      const err = new Error("Invalid username or password");
+      err.code = "INVALID_CREDENTIALS";
+      err.status = 401;
+      return next(err);
     }
     req.login(user, (err) => {
       if (err) return next(err);
-      res.json({ login: true, message: "Logged in successfully!", user });
+      res.json({ data: user });
     });
   })(req, res, next);
 }
