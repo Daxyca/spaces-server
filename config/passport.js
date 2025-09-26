@@ -1,11 +1,11 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
-import { getUserForLocalStrategy, getUserById } from "../db/authQueries.js";
+import * as authQueries from "../db/authQueries.js";
 
 const strategy = new LocalStrategy(async (username, password, done) => {
   try {
-    const user = await getUserForLocalStrategy(username);
+    const user = await authQueries.getUserByNameForLocalStrategy(username);
     if (!user) {
       return done(null, false);
     }
@@ -26,7 +26,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await getUserById(id);
+    const user = await authQueries.getUserByIdForSession(id);
     done(null, user);
   } catch (err) {
     done(err);

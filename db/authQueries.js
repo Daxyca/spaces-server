@@ -10,7 +10,7 @@ export async function createUser(username, passwordHash, email) {
   });
 }
 
-export async function getUserForLocalStrategy(username) {
+export async function getUserByNameForLocalStrategy(username) {
   return await prisma.user.findUnique({
     where: {
       username,
@@ -23,7 +23,7 @@ export async function getUserForLocalStrategy(username) {
   });
 }
 
-export async function getUserById(id) {
+export async function getUserByIdForSession(id) {
   return await prisma.user.findFirst({
     where: {
       id,
