@@ -28,5 +28,12 @@ export async function getUserByIdForSession(id) {
     where: {
       id,
     },
+    include: {
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
   });
 }
