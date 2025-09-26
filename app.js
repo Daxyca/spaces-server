@@ -55,7 +55,14 @@ app.get("/*path", (req, res) => {
 // Error Handlers
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ error: "Server error: " + err.message });
+  const status = err.status || 500;
+  res.status(status).json({
+    error: {
+      code: err.code || "INTERNAL_SERVER_ERROR",
+      message: err.message || "An unexpected error occurred",
+      details: err.details || undefined,
+    },
+  });
 });
 
 //Server
