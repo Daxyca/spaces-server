@@ -10,7 +10,7 @@ import expressSession from "express-session";
 import { apiRouter } from "./routes/apiRouter.js";
 import cors from "cors";
 
-const app = express();
+export const app = express();
 const __dirname = process.cwd();
 const assetsPath = path.join(__dirname, "public");
 const sessionStore = new PrismaSessionStore(prisma, {
@@ -25,10 +25,12 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
+if (process.env.NODE_ENV !== "development") {
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+  });
+}
 app.use(express.json());
 app.use(
   expressSession({
@@ -63,13 +65,4 @@ app.use((err, req, res, next) => {
       details: err.details || undefined,
     },
   });
-});
-
-//Server
-const PORT = 3000;
-app.listen(PORT, (err) => {
-  if (err) {
-    console.error(err);
-  }
-  console.log("App listening at PORT", PORT);
 });
