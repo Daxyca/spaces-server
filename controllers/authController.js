@@ -1,6 +1,6 @@
-import * as authQueries from "../db/authQueries.js";
 import passport from "passport";
 import bcrypt from "bcryptjs";
+import * as authQueries from "../db/authQueries.js";
 import * as profileQueries from "../db/profileQueries.js";
 
 export async function authRegisterPost(req, res) {
@@ -13,11 +13,14 @@ export async function authRegisterPost(req, res) {
   res.status(201).json({ data: user });
 }
 
-export function authLoginGet(req, res) {
+export function authLoginGet(req, res, next) {
   if (req.isAuthenticated()) {
-    res.json({ user: { id: req.user.id, username: req.user.username } });
+    res.json({ data: req.user });
   } else {
-    res.json({ user: null });
+    const err = new Error("Not logged in");
+    err.code = "NOT_AUTHENTICATED";
+    err.status = 401;
+    return next(err);
   }
 }
 
@@ -38,15 +41,20 @@ export function authLoginPost(req, res, next) {
 }
 
 export function authLogoutDelete(req, res, next) {
+  const notLoggedIn = () => {
+    const err = new Error("Not logged in");
+    err.code = "NOT_AUTHENTICATED";
+    err.status = 401;
+    return next(err);
+  };
   if (!req.user) {
-    return res.json({ logout: false, message: "Already logged out." });
+    return notLoggedIn();
   }
   req.logout((err) => {
     if (err) {
-      // console.error(err);
-      res.json({ logout: false, message: "Already logged out!" });
+      return notLoggedIn();
     } else {
-      res.json({ logout: true, message: "Logged out successfully!" });
+      res.json({ message: "Logged out successfully" });
     }
   });
 }
