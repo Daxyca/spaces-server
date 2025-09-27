@@ -5,17 +5,19 @@ import "./setup.js";
 import prisma from "../db/prisma.js";
 
 describe("authRouter /api/auth", function () {
-  const USER = createRandomUser();
-  const USER_CREDENTIALS = { username: USER.username, password: USER.password };
-  const WRONG_CREDENTIALS = {
-    username: USER.username,
-    password: USER.username,
-  };
-
+  let USER;
+  let USER_CREDENTIALS;
+  let WRONG_CREDENTIALS;
   let cookie;
   let invalidCookie;
 
   beforeAll(async () => {
+    USER = createRandomUser();
+    USER_CREDENTIALS = { username: USER.username, password: USER.password };
+    WRONG_CREDENTIALS = {
+      username: USER.username,
+      password: USER.username,
+    };
     await prisma.user.deleteMany();
   });
 
