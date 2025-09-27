@@ -36,13 +36,13 @@ User {
 }
 
 Follow {
-  status{Pending, Accepted}, createdAt, following(Profile.userId), follower(Profile.userId),
+  status{Pending, Accepted}, createdAt, following(Profile.id), follower(Profile.id),
 
   @@id([followerId, followingId]),
 }
 
 Profile {
-  user(User.id), userId@id, displayName,
+  id=user.id, user(User.id), displayName,
   posts[Post], comments[Comment],
   likedPosts[Post], likedComments[Comment],
   following[Follow], followers[Follow],
@@ -51,16 +51,16 @@ Profile {
 }
 
 Post {
-  id, author(Profile.userId), content, createdAt,
+  id, author(Profile.id), content, createdAt,
   likes[Profile], comments[Comment],
 }
 
 Comment {
-  id, author(Profile.userId), post(Post.id), content, createdAt, likes[Profile],
+  id, author(Profile.id), post(Post.id), content, createdAt, likes[Profile],
 }
 
 Feed {
-  id, name, createdAt, author(Profile.userId), users[Profile],
+  id, name, createdAt, author(Profile.id), users[Profile],
 }
 ```
 
@@ -74,7 +74,7 @@ Profile.extend {
 }
 
 Message {
-  id, content,  createdAt, sender(Profile.userId), receiver(Profile.userId),
+  id, content,  createdAt, sender(Profile.id), receiver(Profile.id),
 }
 ```
 
