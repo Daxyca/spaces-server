@@ -1,10 +1,7 @@
-// import { execSync } from "child_process";
 import prisma from "../db/prisma.js";
 
 beforeAll(async () => {
-  //   execSync("npx prisma migrate reset --force --skip-seed", {
-  //     stdio: "inherit",
-  //   });
+  // Clear Tables
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
   await prisma.feed.deleteMany();
