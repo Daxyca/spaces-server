@@ -20,7 +20,7 @@ export function authLoginGet(req, res, next) {
       data: {
         username: user.username,
         id: user.id,
-        displayName: user.profile.displayName,
+        displayName: user.displayName,
       },
     });
   } else {

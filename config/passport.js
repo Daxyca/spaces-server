@@ -31,7 +31,11 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await authQueries.getUserByIdForSession(id);
-    done(null, user);
+    done(null, {
+      id: user.id,
+      username: user.username,
+      displayName: user.profile.displayName,
+    });
   } catch (err) {
     done(err);
   }
