@@ -13,24 +13,6 @@ export async function authRegisterPost(req, res) {
   res.status(201).json({ data: user });
 }
 
-export function authLoginGet(req, res, next) {
-  if (req.isAuthenticated()) {
-    const user = req.user;
-    res.json({
-      data: {
-        username: user.username,
-        id: user.id,
-        displayName: user.displayName,
-      },
-    });
-  } else {
-    const err = new Error("Not logged in");
-    err.code = "NOT_AUTHENTICATED";
-    err.status = 401;
-    return next(err);
-  }
-}
-
 export function authLoginPost(req, res, next) {
   passport.authenticate("local", (err, user, info, status) => {
     if (err) return next(err);
@@ -47,19 +29,24 @@ export function authLoginPost(req, res, next) {
   })(req, res, next);
 }
 
+export function authLoginGet(req, res, next) {
+  const user = req.user;
+  res.json({
+    data: {
+      username: user.username,
+      id: user.id,
+      displayName: user.displayName,
+    },
+  });
+}
+
 export function authLogoutDelete(req, res, next) {
-  const notLoggedIn = () => {
-    const err = new Error("Not logged in");
-    err.code = "NOT_AUTHENTICATED";
-    err.status = 401;
-    return next(err);
-  };
-  if (!req.user) {
-    return notLoggedIn();
-  }
   req.logout((err) => {
     if (err) {
-      return notLoggedIn();
+      const err = new Error("Not logged in");
+      err.code = "NOT_AUTHENTICATED";
+      err.status = 401;
+      return next(err);
     } else {
       res.json({ message: "Logged out successfully" });
     }
