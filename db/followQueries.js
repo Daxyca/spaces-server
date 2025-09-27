@@ -95,12 +95,18 @@ export async function findFollowersRequests(currentUserId) {
 export async function findNotFollowing(currentUserId) {
   return await prisma.profile.findMany({
     where: {
-      id: {
-        not: currentUserId,
-      },
-      following: {
-        none: { followerId: currentUserId },
-      },
+      AND: [
+        {
+          id: {
+            not: currentUserId,
+          },
+        },
+        {
+          followers: {
+            none: { followerId: currentUserId },
+          },
+        },
+      ],
     },
     select: FOLLOW_SELECT.select,
   });
