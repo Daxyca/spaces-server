@@ -80,41 +80,42 @@ Message {
 
 ## 4. API Endpoints
 
-|             | Method | Route                              | Description                                            | Auth Required |
-| ----------- | ------ | ---------------------------------- | ------------------------------------------------------ | ------------- |
+|             | Method | Route                          | Description                                            | Auth Required |
+| ----------- | ------ | ------------------------------ | ------------------------------------------------------ | ------------- |
 | **Auth**    |
-|             | POST   | /api/auth/register                 | Create a new user                                      | X             |
-|             | POST   | /api/auth/login                    | Log in                                                 | X             |
-|             | GET    | /api/auth/login                    | Re-fetch user info                                     | Yes           |
-|             | DELETE | /api/auth/logout                   | Delete current user session                            | Yes           |
+|             | POST   | /api/auth/register             | Create a new user                                      | X             |
+|             | POST   | /api/auth/login                | Log in                                                 | X             |
+|             | GET    | /api/auth/login                | Re-fetch user info                                     | Yes           |
+|             | DELETE | /api/auth/logout               | Delete current user session                            | Yes           |
 | **Follow**  |
-|             | POST   | /api/follow/:userId                | Send follow request                                    | Yes           |
-|             | PATCH  | /api/follow/:userId                | Accept follow request                                  | Yes           |
-|             | DELETE | /api/follow/:userId                | Cancel follow request or unfollow                      | Yes           |
-|             | GET    | /api/follow/following              | Get list of current user's followed users              | Yes           |
-|             | GET    | /api/follow/followers              | Get list of current user's followers                   | Yes           |
-|             | GET    | /api/follow/following/requests     | Get list of current user's pending following requests  | Yes           |
-|             | GET    | /api/follow/followers/requests     | Get list of current user's pending followers requests  | Yes           |
-|             | GET    | /api/follow/notfollowing           | Get list of current user's not followed users          | Yes           |
+|             | POST   | /api/follow/:userId            | Send follow request                                    | Yes           |
+|             | PATCH  | /api/follow/:userId            | Accept follow request                                  | Yes           |
+|             | DELETE | /api/follow/:userId            | Cancel follow request or unfollow                      | Yes           |
+|             | GET    | /api/follow/following          | Get list of current user's followed users              | Yes           |
+|             | GET    | /api/follow/followers          | Get list of current user's followers                   | Yes           |
+|             | GET    | /api/follow/following/requests | Get list of current user's pending following requests  | Yes           |
+|             | GET    | /api/follow/followers/requests | Get list of current user's pending followers requests  | Yes           |
+|             | GET    | /api/follow/notfollowing       | Get list of current user's not followed users          | Yes           |
 | **Post**    |
-|             | GET    | /api/posts                         | Get list of posts from current user and followed users | Yes           |
-|             | POST   | /api/posts                         | Create a new post                                      | Yes           |
-|             | GET    | /api/posts/:postId                 | Get a post                                             | Yes           |
-|             | POST   | /api/posts/:postId/like            | Add like a post                                        | Yes           |
-|             | DELETE | /api/posts/:postId/like            | Remove like on a post                                  | Yes           |
-|             | POST   | /api/posts/:postId/comments        | Create a comment on a post                             | Yes           |
-|             | POST   | /api/posts/:postId/:commentId/like | Add like a comment                                     | Yes           |
-|             | POST   | /api/posts/:postId/:commentId/like | Remove like on a comment                               | Yes           |
+|             | GET    | /api/posts                     | Get list of posts from current user and followed users | Yes           |
+|             | POST   | /api/posts                     | Create a new post                                      | Yes           |
+|             | GET    | /api/posts/:postId             | Get a post                                             | Yes           |
+|             | POST   | /api/posts/:postId/like        | Add like on a post                                     | Yes           |
+|             | DELETE | /api/posts/:postId/like        | Remove like on a post                                  | Yes           |
+|             | POST   | /api/posts/:postId/comments    | Create a comment on a post                             | Yes           |
+| **Post**    |
+|             | POST   | /api/comments/:commentId/like  | Add like on a comment                                  | Yes           |
+|             | DELETE | /api/comments/:commentId/like  | Remove like on a comment                               | Yes           |
 | **Profile** |
-|             | GET    | /api/profile                       | Get current user's profile                             | Yes           |
-|             | PATCH  | /api/profile                       | Update current user's profile                          | Yes           |
-|             | GET    | /api/profile/:userId               | Get specific user's profile                            | Yes           |
+|             | GET    | /api/profile                   | Get current user's profile                             | Yes           |
+|             | PATCH  | /api/profile                   | Update current user's profile                          | Yes           |
+|             | GET    | /api/profile/:userId           | Get specific user's profile                            | Yes           |
 | **Feed**    |
-|             | GET    | /api/feeds                         | Get list of current user's feeds                       | Yes           |
-|             | POST   | /api/feeds                         | Create custom feed                                     | Yes           |
-|             | GET    | /api/feeds/:feedId                 | Get posts from custom feed                             | Yes           |
-|             | PATCH  | /api/feeds/:feedId                 | Update custom feed                                     | Yes           |
-|             | DELETE | /api/feeds/:feedId                 | Delete custom feed                                     | Yes           |
+|             | GET    | /api/feeds                     | Get list of current user's feeds                       | Yes           |
+|             | POST   | /api/feeds                     | Create custom feed                                     | Yes           |
+|             | GET    | /api/feeds/:feedId             | Get posts from custom feed                             | Yes           |
+|             | PATCH  | /api/feeds/:feedId             | Update custom feed                                     | Yes           |
+|             | DELETE | /api/feeds/:feedId             | Delete custom feed                                     | Yes           |
 
 ## 5. Architecture & Tech Stack
 
