@@ -126,6 +126,7 @@ function writeObjToFile(obj) {
 }
 
 async function clearTables() {
+  await prisma.session.deleteMany();
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
   await prisma.feed.deleteMany();
