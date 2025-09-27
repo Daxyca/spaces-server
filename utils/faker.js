@@ -7,7 +7,7 @@ export function createRandomUser() {
   const uuid = faker.string.uuid();
   const email =
     uuid.slice(0, 8) + faker.internet.email({ firstName, lastName });
-  const password = uuid.slice(24);
+  const password = faker.internet.password();
   const username = (firstName + lastName).replace(" ", "") + uuid.slice(0, 4);
   const sexAtBirth = sex[0].toUpperCase() + sex.slice(1);
 
@@ -16,9 +16,10 @@ export function createRandomUser() {
     password,
     email,
     profile: {
-      birthday: faker.date.birthdate(),
+      birthDate: faker.date.birthdate(),
       firstName,
       lastName,
+      displayName: `${firstName} ${lastName}`,
       sexAtBirth,
     },
   };
