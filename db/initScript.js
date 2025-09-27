@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import * as authQueries from "./authQueries.js";
 import * as profileQueries from "./profileQueries.js";
 import * as followQueries from "./followQueries.js";
+import * as postQueries from "./postsQueries.js";
 import { createRandomUser } from "../utils/faker.js";
 import fs from "fs";
 
@@ -14,12 +15,17 @@ async function main() {
   const NUMBER_OF_USERS = 6;
   const users = [];
   const profiles = [];
+  const posts = [];
 
   // Users and Profiles
   for (let i = 0; i < NUMBER_OF_USERS; i++) {
     const { user, profile } = await insertRandomUser(i === 0 ? "user" : null);
+    const post = await postQueries.createPost(user.id, {
+      content: `The writer is ${user.username}`,
+    });
     users.push(user);
     profiles.push(profile);
+    posts.push(post);
   }
 
   // Follows
@@ -76,9 +82,20 @@ async function main() {
   );
   const findNotFollowing = await followQueries.findNotFollowing(users[0].id);
 
+  // Posts
+  const getMainFeedPosts = await postQueries.getMainFeedPosts(users[0].id);
+  // postQueries.getPost
+  // postQueries.likePost
+  // postQueries.unlikePost
+  // postQueries.onPostCreateComment
+
   writeObjToFile({
     fileName: "db/scriptResults.json",
     byQuery: {
+      posts: {
+        getMainFeedPosts: getMainFeedPosts,
+        createPost: posts[0],
+      },
       auth: {
         createUser: users[0],
         getUserByNameForLocalStrategy:

@@ -1,0 +1,36 @@
+import prisma from "./prisma.js";
+
+export async function getMainFeedPosts(currentUserId) {
+  return await prisma.post.findMany({
+    where: {
+      author: {
+        followers: {
+          some: {
+            followerId: currentUserId,
+            status: "Accepted",
+          },
+        },
+      },
+    },
+    include: {
+      author: true,
+    },
+  });
+}
+
+export async function createPost(currentUserId, post = {}) {
+  return await prisma.post.create({
+    data: {
+      content: post.content,
+      authorId: currentUserId,
+    },
+  });
+}
+
+export async function getPost(postId) {}
+
+export async function likePost(postId) {}
+
+export async function unlikePost(postId) {}
+
+export async function onPostCreateComment(postId) {}
