@@ -31,13 +31,14 @@ model User {
 }
 
 model Follow {
-  id          String       @id @default(cuid())
   status      FollowStatus @default(Pending)
   createdAt   DateTime     @default(now())
-  following   Profile      @relation("Following", fields: [followingId], references: [id])
+  following   Profile      @relation("Following", fields: [followingId], references: [userId])
   followingId String
-  follower    Profile      @relation("Followers", fields: [followerId], references: [id])
+  follower    Profile      @relation("Followers", fields: [followerId], references: [userId])
   followerId  String
+
+  @@id([followerId, followingId])
 }
 
 enum FollowStatus {
@@ -46,9 +47,8 @@ enum FollowStatus {
 }
 
 model Profile {
-  id            String      @id @default(cuid())
   user          User        @relation(fields: [userId], references: [id])
-  userId        String      @unique
+  userId        String      @id
   displayName   String
   posts         Post[]      @relation("Author")
   comments      Comment[]   @relation("Author")
@@ -76,7 +76,7 @@ model Post {
   id        String    @id @default(cuid())
   content   String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("Author", fields: [authorId], references: [id])
+  author    Profile   @relation("Author", fields: [authorId], references: [userId])
   authorId  String
   likes     Profile[] @relation("Likes")
   comments  Comment[]
@@ -86,7 +86,7 @@ model Comment {
   id        String    @id @default(cuid())
   content   String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("Author", fields: [authorId], references: [id])
+  author    Profile   @relation("Author", fields: [authorId], references: [userId])
   authorId  String
   post      Post      @relation(fields: [postId], references: [id])
   postId    String
@@ -97,7 +97,7 @@ model Feed {
   id        String    @id @default(cuid())
   name      String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("Author", fields: [authorId], references: [id])
+  author    Profile   @relation("Author", fields: [authorId], references: [userId])
   authorId  String
   users     Profile[]
 }
