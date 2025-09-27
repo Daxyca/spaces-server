@@ -1,13 +1,17 @@
 import request from "supertest";
 import { app } from "../app.js";
+import { createRandomUser } from "../utils/faker.js";
 import "./setup.js";
 import prisma from "../db/prisma.js";
 
-const USER = { username: "123", password: "123", email: "123@123.123" };
-const USER_CREDENTIALS = { username: "123", password: "123" };
-const WRONG_CREDENTIALS = { username: "john", password: "321" };
-
 describe("authRouter /api/auth", function () {
+  const USER = createRandomUser();
+  const USER_CREDENTIALS = { username: USER.username, password: USER.password };
+  const WRONG_CREDENTIALS = {
+    username: USER.username,
+    password: USER.username,
+  };
+
   let cookie;
   let invalidCookie;
 
@@ -22,9 +26,12 @@ describe("authRouter /api/auth", function () {
       .send(user)
       .expect("Content-Type", /json/)
       .expect(201);
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findUniqueOrThrow({
+      where: {
+        username: user.username,
+      },
+    });
     expect(res.body.data.username).toBe(user.username);
-    expect(users.length).toBe(1);
   });
 
   test("POST ./login logs a valid user in", async function () {
@@ -39,7 +46,7 @@ describe("authRouter /api/auth", function () {
   });
 
   test("POST ./login responds error on wrong credentials", async function () {
-    const user = WRONG_CREDENTIALS; // wrong credentials
+    const user = WRONG_CREDENTIALS;
     const res = await request(app)
       .post("/api/auth/login")
       .send(user)
