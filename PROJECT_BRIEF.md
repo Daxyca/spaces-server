@@ -93,7 +93,8 @@ Message {
 |             | DELETE | /api/follow/:userId                | Cancel follow request or unfollow                      | Yes           |
 |             | GET    | /api/follow/following              | Get list of current user's followed users              | Yes           |
 |             | GET    | /api/follow/followers              | Get list of current user's followers                   | Yes           |
-|             | GET    | /api/follow/requests               | Get list of current user's pending follow requests     | Yes           |
+|             | GET    | /api/follow/following/requests     | Get list of current user's pending following requests  | Yes           |
+|             | GET    | /api/follow/followers/requests     | Get list of current user's pending followers requests  | Yes           |
 |             | GET    | /api/follow/notfollowing           | Get list of current user's not followed users          | Yes           |
 | **Post**    |
 |             | GET    | /api/posts                         | Get list of posts from current user and followed users | Yes           |
