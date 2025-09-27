@@ -98,10 +98,10 @@ export async function findNotFollowing(currentUserId) {
       id: {
         not: currentUserId,
       },
-      followers: {
-        none: { followingId: currentUserId },
+      following: {
+        none: { followerId: currentUserId },
       },
     },
-    ...FOLLOW_SELECT,
+    select: FOLLOW_SELECT.select,
   });
 }

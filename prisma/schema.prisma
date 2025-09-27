@@ -33,9 +33,9 @@ model User {
 model Follow {
   status      FollowStatus @default(Pending)
   createdAt   DateTime     @default(now())
-  following   Profile      @relation("Following", fields: [followingId], references: [id])
+  following   Profile      @relation("As Followed", fields: [followingId], references: [id])
   followingId String
-  follower    Profile      @relation("Followers", fields: [followerId], references: [id])
+  follower    Profile      @relation("As Follower", fields: [followerId], references: [id])
   followerId  String
 
   @@id([followerId, followingId])
@@ -56,8 +56,8 @@ model Profile {
   feedsIncluded Feed[]
   likedPosts    Post[]      @relation("Likes")
   likedComments Comment[]   @relation("Likes")
-  following     Follow[]    @relation("Following")
-  followers     Follow[]    @relation("Followers")
+  following     Follow[]    @relation("As Follower")
+  followers     Follow[]    @relation("As Followed")
   picture       String?
   firstName     String?
   lastName      String?
