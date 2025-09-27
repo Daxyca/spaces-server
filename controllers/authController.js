@@ -15,7 +15,14 @@ export async function authRegisterPost(req, res) {
 
 export function authLoginGet(req, res, next) {
   if (req.isAuthenticated()) {
-    res.json({ data: req.user });
+    const user = req.user;
+    res.json({
+      data: {
+        username: user.username,
+        id: user.id,
+        displayName: user.profile.displayName,
+      },
+    });
   } else {
     const err = new Error("Not logged in");
     err.code = "NOT_AUTHENTICATED";

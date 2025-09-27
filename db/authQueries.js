@@ -19,6 +19,11 @@ export async function getUserByNameForLocalStrategy(username) {
       id: true,
       username: true,
       passwordHash: true,
+      profile: {
+        select: {
+          displayName: true,
+        },
+      },
     },
   });
 }
