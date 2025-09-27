@@ -10,7 +10,7 @@ export async function userIdPost(req, res) {
 export async function userIdPatch(req, res) {
   const currentUserId = req.user.id;
   const otherUserId = req.params.userId;
-  await followQueries.updateFollow(currentUserId, otherUserId);
+  await followQueries.updateFollowToAccepted(currentUserId, otherUserId);
   res.json({ follow: true });
 }
 
