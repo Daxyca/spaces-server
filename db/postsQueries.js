@@ -46,8 +46,47 @@ export async function createPost(currentUserId, content) {
 
 export async function getPost(postId) {}
 
-export async function likePost(postId) {}
+export async function isPostAlreadyLiked(currentUserId, postId) {
+  return await prisma.post.findFirst({
+    where: {
+      id: postId,
+      likes: {
+        some: {
+          id: currentUserId,
+        },
+      },
+    },
+  });
+}
 
-export async function unlikePost(postId) {}
+export async function likePost(currentUserId, postId) {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      likes: {
+        connect: {
+          id: currentUserId,
+        },
+      },
+    },
+  });
+}
+
+export async function unlikePost(currentUserId, postId) {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      likes: {
+        disconnect: {
+          id: currentUserId,
+        },
+      },
+    },
+  });
+}
 
 export async function onPostCreateComment(postId) {}

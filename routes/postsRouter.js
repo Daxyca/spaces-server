@@ -3,5 +3,7 @@ import { Router } from "express";
 
 export const postsRouter = Router();
 
-postsRouter.get("/", postsController.postsGet);
-postsRouter.post("/", postsController.postsPost);
+postsRouter.get("/", postsController.indexGet);
+postsRouter.post("/", postsController.indexPost);
+postsRouter.post("/:postId/like", postsController.postIdLikePost);
+postsRouter.delete("/:postId/like", postsController.postIdLikeDelete);
