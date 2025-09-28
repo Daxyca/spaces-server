@@ -33,9 +33,9 @@ model User {
 model Follow {
   status      FollowStatus @default(Pending)
   createdAt   DateTime     @default(now())
-  following   Profile      @relation("As Followed", fields: [followingId], references: [id])
+  following   Profile      @relation(fields: [followingId], references: [id])
   followingId String
-  follower    Profile      @relation("As Follower", fields: [followerId], references: [id])
+  follower    Profile      @relation("AsFollower", fields: [followerId], references: [id])
   followerId  String
 
   @@id([followerId, followingId])
@@ -50,14 +50,14 @@ model Profile {
   id            String      @id // user.id
   user          User        @relation(fields: [id], references: [id])
   displayName   String
-  posts         Post[]      @relation("Author")
-  comments      Comment[]   @relation("Author")
-  feedsCreated  Feed[]      @relation("Author")
+  posts         Post[]
+  comments      Comment[]
+  feedsCreated  Feed[]      @relation("FeedAuthor")
   feedsIncluded Feed[]
-  likedPosts    Post[]      @relation("Likes")
-  likedComments Comment[]   @relation("Likes")
-  following     Follow[]    @relation("As Follower")
-  followers     Follow[]    @relation("As Followed")
+  likedPosts    Post[]      @relation("PostLikes")
+  likedComments Comment[]   @relation("CommentLikes")
+  following     Follow[]    @relation("AsFollower")
+  followers     Follow[]
   picture       String?
   firstName     String?
   lastName      String?
@@ -76,9 +76,9 @@ model Post {
   id        String    @id @default(cuid())
   content   String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("Author", fields: [authorId], references: [id])
+  author    Profile   @relation(fields: [authorId], references: [id])
   authorId  String
-  likes     Profile[] @relation("Likes")
+  likes     Profile[] @relation("PostLikes")
   comments  Comment[]
 }
 
@@ -86,18 +86,18 @@ model Comment {
   id        String    @id @default(cuid())
   content   String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("Author", fields: [authorId], references: [id])
+  author    Profile   @relation(fields: [authorId], references: [id])
   authorId  String
   post      Post      @relation(fields: [postId], references: [id])
   postId    String
-  likes     Profile[] @relation("Likes")
+  likes     Profile[] @relation("CommentLikes")
 }
 
 model Feed {
   id        String    @id @default(cuid())
   name      String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("Author", fields: [authorId], references: [id])
+  author    Profile   @relation("FeedAuthor", fields: [authorId], references: [id])
   authorId  String
   users     Profile[]
 }
