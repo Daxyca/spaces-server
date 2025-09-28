@@ -20,9 +20,10 @@ async function main() {
   // Users and Profiles
   for (let i = 0; i < NUMBER_OF_USERS; i++) {
     const { user, profile } = await insertRandomUser(i === 0 ? "user" : null);
-    const post = await postQueries.createPost(user.id, {
-      content: `The writer is ${user.username}`,
-    });
+    const post = await postQueries.createPost(
+      user.id,
+      `The writer is ${user.username}`
+    );
     users.push(user);
     profiles.push(profile);
     posts.push(post);
@@ -64,7 +65,11 @@ async function main() {
     }
   }
 
-  for (const key of ["sent", "accepted"]) {
+  const statusToDelete = [
+    "sent",
+    // "accepted"
+  ];
+  for (const key of statusToDelete) {
     const removedFollow = await followQueries.deleteFollowing(
       follows[key][0].followerId,
       follows[key][0].followingId

@@ -18,10 +18,10 @@ export async function getMainFeedPosts(currentUserId) {
   });
 }
 
-export async function createPost(currentUserId, post = {}) {
+export async function createPost(currentUserId, content) {
   return await prisma.post.create({
     data: {
-      content: post.content,
+      content,
       authorId: currentUserId,
     },
   });
