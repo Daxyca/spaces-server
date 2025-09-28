@@ -4,12 +4,19 @@ export async function getMainFeedPosts(currentUserId) {
   return await prisma.post.findMany({
     where: {
       author: {
-        followers: {
-          some: {
-            followerId: currentUserId,
-            status: "Accepted",
+        OR: [
+          {
+            followers: {
+              some: {
+                followerId: currentUserId,
+                status: "Accepted",
+              },
+            },
           },
-        },
+          {
+            id: currentUserId,
+          },
+        ],
       },
     },
     include: {
