@@ -21,6 +21,16 @@ export async function getMainFeedPosts(currentUserId) {
     },
     include: {
       author: true,
+      _count: {
+        select: {
+          likes: true,
+        },
+      },
+      likes: {
+        where: {
+          id: currentUserId,
+        },
+      },
     },
   });
 }
