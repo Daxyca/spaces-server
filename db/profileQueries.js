@@ -1,13 +1,16 @@
 import prisma from "./prisma.js";
 import * as filters from "./filters.js";
 
-export async function getUserProfile(userId) {
+export async function getUserProfile(currentUserId, otherUserId) {
+  if (!otherUserId) {
+    otherUserId = currentUserId;
+  }
   return await prisma.profile.findFirst({
     where: {
-      id: userId,
+      id: otherUserId,
     },
     include: {
-      posts: { include: filters.POSTS_INCLUDE_FOR_FEED(userId) },
+      posts: { include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId) },
     },
   });
 }

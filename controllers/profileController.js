@@ -11,6 +11,19 @@ export async function indexGet(req, res) {
   res.json({ get: true, profile });
 }
 
+export async function userIdGet(req, res) {
+  const otherUserId = req.params.userId;
+  const currentUser = req.user;
+  if (!currentUser) {
+    return res.json({ get: false, message: "Error! Not logged in." });
+  }
+  const profile = await profileQueries.getUserProfile(
+    currentUser.id,
+    otherUserId
+  );
+  res.json({ get: true, profile });
+}
+
 export async function indexPatch(req, res) {
   req.body.birthDate = req.body.birthDate
     ? new Date(req.body.birthDate)
