@@ -39,3 +39,28 @@ export async function updateProfile(userId, profile = {}) {
     },
   });
 }
+
+export async function updateProfilePicture(userId, imagePath) {
+  return await prisma.profile.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      picture: imagePath,
+    },
+    select: {
+      picture: true,
+    },
+  });
+}
+
+export async function getPreviousProfilePicture(userId) {
+  return await prisma.profile.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      picture: true,
+    },
+  });
+}

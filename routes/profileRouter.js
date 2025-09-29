@@ -5,3 +5,4 @@ export const profileRouter = Router();
 
 profileRouter.get("/", profileController.indexGet);
 profileRouter.patch("/", profileController.indexPatch);
+profileRouter.post("/picture", profileController.picturePost);
