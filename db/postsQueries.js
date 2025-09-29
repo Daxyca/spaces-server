@@ -1,11 +1,5 @@
 import prisma from "./prisma.js";
-
-const AUTHOR_SELECT = {
-  select: {
-    id: true,
-    displayName: true,
-  },
-};
+import * as filters from "./filters.js";
 
 export async function getMainFeedPosts(currentUserId) {
   return await prisma.post.findMany({
@@ -26,24 +20,7 @@ export async function getMainFeedPosts(currentUserId) {
         ],
       },
     },
-    include: {
-      author: AUTHOR_SELECT,
-      _count: {
-        select: {
-          likes: true,
-        },
-      },
-      likes: {
-        where: {
-          id: currentUserId,
-        },
-      },
-      comments: {
-        include: {
-          author: AUTHOR_SELECT,
-        },
-      },
-    },
+    include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId),
   });
 }
 

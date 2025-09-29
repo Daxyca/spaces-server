@@ -1,9 +1,13 @@
 import prisma from "./prisma.js";
+import * as filters from "./filters.js";
 
 export async function getUserProfile(userId) {
   return await prisma.profile.findFirst({
     where: {
       id: userId,
+    },
+    include: {
+      posts: { include: filters.POSTS_INCLUDE_FOR_FEED(userId) },
     },
   });
 }
