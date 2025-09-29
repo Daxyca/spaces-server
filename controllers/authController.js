@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import * as authQueries from "../db/authQueries.js";
 import * as profileQueries from "../db/profileQueries.js";
 
-export async function authRegisterPost(req, res) {
+export async function registerPost(req, res) {
   const { username, email, password } = req.body;
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await authQueries.createUser(username, passwordHash, email);
@@ -13,7 +13,7 @@ export async function authRegisterPost(req, res) {
   res.status(201).json({ data: user });
 }
 
-export function authLoginPost(req, res, next) {
+export function loginPost(req, res, next) {
   passport.authenticate("local", (err, user, info, status) => {
     if (err) return next(err);
     if (!user) {
@@ -29,7 +29,7 @@ export function authLoginPost(req, res, next) {
   })(req, res, next);
 }
 
-export function authLoginGet(req, res, next) {
+export function loginGet(req, res, next) {
   const user = req.user;
   res.json({
     data: {
@@ -40,7 +40,7 @@ export function authLoginGet(req, res, next) {
   });
 }
 
-export function authLogoutDelete(req, res, next) {
+export function logoutDelete(req, res, next) {
   req.logout((err) => {
     if (err) {
       const err = new Error("Not logged in");

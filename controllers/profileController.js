@@ -1,6 +1,6 @@
 import * as profileQueries from "../db/profileQueries.js";
 
-export async function profileGet(req, res) {
+export async function indexGet(req, res) {
   const currentUser = req.user;
   if (!currentUser) {
     return res.json({ get: false, message: "Error! Not logged in." });
@@ -9,7 +9,7 @@ export async function profileGet(req, res) {
   res.json({ get: true, profile });
 }
 
-export async function profilePatch(req, res) {
+export async function indexPatch(req, res) {
   req.body.birthDate = req.body.birthDate
     ? new Date(req.body.birthDate)
     : undefined;
