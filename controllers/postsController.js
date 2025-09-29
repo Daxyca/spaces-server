@@ -37,3 +37,15 @@ export async function postIdLikeDelete(req, res) {
   await postsQueries.unlikePost(currentUserId, postId);
   res.json({ unlike: true });
 }
+
+export async function postIdCommentsPost(req, res) {
+  const currentUserId = req.user.id;
+  const postId = req.params.postId;
+  const content = req.body.content;
+  const comment = await postsQueries.onPostCreateComment(
+    currentUserId,
+    postId,
+    content
+  );
+  res.json({ comment });
+}

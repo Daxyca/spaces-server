@@ -1,5 +1,12 @@
 import prisma from "./prisma.js";
 
+const AUTHOR_SELECT = {
+  select: {
+    id: true,
+    displayName: true,
+  },
+};
+
 export async function getMainFeedPosts(currentUserId) {
   return await prisma.post.findMany({
     where: {
@@ -20,7 +27,7 @@ export async function getMainFeedPosts(currentUserId) {
       },
     },
     include: {
-      author: true,
+      author: AUTHOR_SELECT,
       _count: {
         select: {
           likes: true,
@@ -29,6 +36,11 @@ export async function getMainFeedPosts(currentUserId) {
       likes: {
         where: {
           id: currentUserId,
+        },
+      },
+      comments: {
+        include: {
+          author: AUTHOR_SELECT,
         },
       },
     },
@@ -89,4 +101,12 @@ export async function unlikePost(currentUserId, postId) {
   });
 }
 
-export async function onPostCreateComment(postId) {}
+export async function onPostCreateComment(authorId, postId, content) {
+  return await prisma.comment.create({
+    data: {
+      authorId,
+      postId,
+      content,
+    },
+  });
+}
