@@ -100,4 +100,6 @@ model Feed {
   author    Profile   @relation("FeedAuthor", fields: [authorId], references: [id])
   authorId  String
   users     Profile[]
+
+  @@unique([authorId, name])
 }
