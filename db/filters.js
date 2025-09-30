@@ -1,4 +1,4 @@
-const AUTHOR_SELECT = {
+export const AUTHOR_SELECT = {
   select: {
     id: true,
     displayName: true,

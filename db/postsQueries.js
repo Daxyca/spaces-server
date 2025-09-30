@@ -30,6 +30,9 @@ export async function createPost(currentUserId, content) {
       content,
       authorId: currentUserId,
     },
+    include: {
+      author: filters.AUTHOR_SELECT,
+    },
   });
 }
 
