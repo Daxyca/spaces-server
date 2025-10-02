@@ -88,5 +88,8 @@ export async function onPostCreateComment(authorId, postId, content) {
       postId,
       content,
     },
+    include: {
+      author: filters.AUTHOR_SELECT,
+    },
   });
 }

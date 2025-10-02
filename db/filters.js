@@ -2,6 +2,7 @@ export const AUTHOR_SELECT = {
   select: {
     id: true,
     displayName: true,
+    picture: true,
   },
 };
 
