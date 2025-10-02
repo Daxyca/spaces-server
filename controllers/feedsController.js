@@ -20,13 +20,10 @@ export async function feedPostsGet(req, res) {
   res.json(feed);
 }
 
-export async function feedUserPatch(req, res) {
+export async function feedUsersPut(req, res) {
   const currentUserId = req.user.id;
   const name = decodeURIComponent(req.params.feedName);
-  const otherUserId = req.body.otherUserId;
-  const feed = await feedQueries.addUserToFeed(
-    currentUserId,
-    name,
-    otherUserId
-  );
+  const userIds = req.body.userIds;
+  const feed = await feedQueries.updateFeedUsers(currentUserId, name, userIds);
+  res.json(feed);
 }

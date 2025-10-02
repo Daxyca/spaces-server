@@ -6,4 +6,4 @@ export const feedsRouter = Router();
 feedsRouter.get("/", feedsController.indexGet);
 feedsRouter.post("/", feedsController.indexPost);
 feedsRouter.get("/:feedName", feedsController.feedPostsGet);
-feedsRouter.patch("/:feedName", feedsController.feedUserPatch);
+feedsRouter.put("/:feedName", feedsController.feedUsersPut);

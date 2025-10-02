@@ -31,22 +31,6 @@ export async function getFeedPosts(currentUserId, feedName) {
     },
     include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId),
   });
-
-  return await prisma.feed.findFirst({
-    where: {
-      authorId: currentUserId,
-      name: feedName,
-    },
-    include: {
-      users: {
-        select: {
-          posts: {
-            include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId),
-          },
-        },
-      },
-    },
-  });
 }
 
 export async function createFeed(currentUserId, feedName) {
@@ -55,10 +39,18 @@ export async function createFeed(currentUserId, feedName) {
       authorId: currentUserId,
       name: feedName,
     },
+    include: {
+      users: {
+        select: {
+          id: true,
+          displayName: true,
+        },
+      },
+    },
   });
 }
 
-export async function addUserToFeed(currentUserId, feedName, otherUserId) {
+export async function updateFeedUsers(currentUserId, feedName, userIds) {
   return await prisma.feed.update({
     where: {
       authorId_name: {
@@ -67,10 +59,9 @@ export async function addUserToFeed(currentUserId, feedName, otherUserId) {
       },
     },
     data: {
+      name: feedName,
       users: {
-        connect: {
-          id: otherUserId,
-        },
+        set: userIds.map((id) => ({ id })),
       },
     },
   });
