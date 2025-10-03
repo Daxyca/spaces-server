@@ -7,12 +7,7 @@ export async function getUserFeeds(currentUserId) {
       authorId: currentUserId,
     },
     include: {
-      users: {
-        select: {
-          id: true,
-          displayName: true,
-        },
-      },
+      users: filters.USER_SELECT,
     },
   });
 }
@@ -40,12 +35,7 @@ export async function createFeed(currentUserId, feedName) {
       name: feedName,
     },
     include: {
-      users: {
-        select: {
-          id: true,
-          displayName: true,
-        },
-      },
+      users: filters.USER_SELECT,
     },
   });
 }

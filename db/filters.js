@@ -1,4 +1,4 @@
-export const AUTHOR_SELECT = {
+export const USER_SELECT = {
   select: {
     id: true,
     displayName: true,
@@ -8,7 +8,7 @@ export const AUTHOR_SELECT = {
 
 export const POSTS_INCLUDE_FOR_FEED = (currentUserId) => {
   return {
-    author: AUTHOR_SELECT,
+    author: USER_SELECT,
     _count: {
       select: {
         likes: true,
@@ -21,7 +21,7 @@ export const POSTS_INCLUDE_FOR_FEED = (currentUserId) => {
     },
     comments: {
       include: {
-        author: AUTHOR_SELECT,
+        author: USER_SELECT,
       },
     },
   };
