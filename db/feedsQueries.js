@@ -32,7 +32,7 @@ export async function createFeed(currentUserId, feedName) {
   return await prisma.feed.create({
     data: {
       authorId: currentUserId,
-      name: feedName,
+      name: feedName || null,
     },
     include: {
       users: filters.USER_SELECT,
