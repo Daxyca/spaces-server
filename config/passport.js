@@ -11,7 +11,7 @@ const localStrategy = new LocalStrategy(async (username, password, done) => {
       return done(null, false);
     }
     const passwordHash = user.account[0].passwordHash;
-    const isValid = bcrypt.compare(password, passwordHash);
+    const isValid = await bcrypt.compare(password, passwordHash);
     if (isValid === true) {
       return done(null, {
         id: user.id,
