@@ -3,9 +3,14 @@ import process from "process";
 
 const omitConfig = {
   user: {
+    email: true,
+    createdAt: true,
+    updatedAt: true,
+  },
+  account: {
     passwordHash: true,
     createdAt: true,
-    email: true,
+    updatedAt: true,
   },
 };
 

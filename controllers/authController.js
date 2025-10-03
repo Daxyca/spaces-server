@@ -1,15 +1,11 @@
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import * as authQueries from "../db/authQueries.js";
-import * as profileQueries from "../db/profileQueries.js";
 
 export async function registerPost(req, res) {
   const { username, email, password } = req.body;
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await authQueries.createUser(username, passwordHash, email);
-  const profile = await profileQueries.createProfile(user.id, {
-    displayName: user.username,
-  });
   res.status(201).json({ data: user });
 }
 
