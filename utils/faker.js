@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-export function createRandomUser() {
+export function randomUser() {
   const sex = faker.person.sexType();
   const firstName = faker.person.firstName(sex);
   const lastName = faker.person.lastName();
@@ -23,4 +23,8 @@ export function createRandomUser() {
       sexAtBirth,
     },
   };
+}
+
+export function randomPostContent() {
+  return faker.lorem.paragraphs(3);
 }

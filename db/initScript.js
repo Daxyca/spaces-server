@@ -1,35 +1,21 @@
 import prisma from "./prisma.js";
 import bcrypt from "bcryptjs";
 import * as authQueries from "./authQueries.js";
-import * as profileQueries from "./profileQueries.js";
 import * as followQueries from "./followQueries.js";
 import * as postQueries from "./postsQueries.js";
-import { createRandomUser } from "../utils/faker.js";
+import * as feedQueries from "./feedsQueries.js";
+import * as generate from "../utils/faker.js";
 import fs from "fs";
+
+const PASSWORD_HASH = await bcrypt.hash("123", 10);
 
 main();
 
 async function main() {
   await clearTables();
 
-  const NUMBER_OF_USERS = 6;
+  const NUMBER_OF_USERS = 30;
   const users = [];
-  const profiles = [];
-  const posts = [];
-
-  // Users and Profiles
-  for (let i = 0; i < NUMBER_OF_USERS; i++) {
-    const { user, profile } = await insertRandomUser(i === 0 ? "user" : null);
-    const post = await postQueries.createPost(
-      user.id,
-      `The writer is ${user.username}`
-    );
-    users.push(user);
-    profiles.push(profile);
-    posts.push(post);
-  }
-
-  // Follows
   const follows = {
     sent: [],
     accepted: [],
@@ -38,7 +24,51 @@ async function main() {
     otherSent: [],
     otherAccepted: [],
   };
+  const followStatusToDelete = ["sent", "accepted"];
 
+  // Users
+  for (let i = 0; i < NUMBER_OF_USERS; i++) {
+    const user = await insertRandomUser(i === 0 ? "user" : null, PASSWORD_HASH);
+    users.push(user);
+  }
+
+  // Posts, self-comments, self-likes
+  for (let i = 0; i < NUMBER_OF_USERS; i++) {
+    const user = users[i];
+    user._posts = [];
+    user._comments = [];
+    user._postLikes = [];
+    for (let i = 0; i < 2; i++) {
+      const post = await postQueries.createPost(
+        user.id,
+        `${generate.randomPostContent}\n\n-${user.username}`
+      );
+      const comment = await postQueries.onPostCreateComment(
+        user.id,
+        post.id,
+        `Thanks for reading my post!\n-${user.username}`
+      );
+      const postLike = await postQueries.likePost(user.id, post.id);
+      user._posts.push(post);
+      user._comments.push(comment);
+      user._postLikes.push(postLike);
+    }
+  }
+
+  // Feeds
+  for (let i = 0; i < NUMBER_OF_USERS; i++) {
+    const user = users[i];
+    user._feeds = [];
+    const commonFeed = await feedQueries.createFeed(user.id, "First Feed");
+    const customFeed = await feedQueries.createFeed(
+      user.id,
+      user.username + "'s Feed"
+    );
+    user._feeds.push(commonFeed);
+    user._feeds.push(customFeed);
+  }
+
+  // Follows
   for (let i = 1; i < NUMBER_OF_USERS - 1; i++) {
     const user = users[i];
     const sentFollow = await followQueries.createFollow(users[0].id, user.id);
@@ -65,11 +95,8 @@ async function main() {
     }
   }
 
-  const statusToDelete = [
-    "sent",
-    // "accepted"
-  ];
-  for (const key of statusToDelete) {
+  // Remove one follow
+  for (const key of followStatusToDelete) {
     const removedFollow = await followQueries.deleteFollowing(
       follows[key][0].followerId,
       follows[key][0].followingId
@@ -77,74 +104,46 @@ async function main() {
     follows.removed.push(removedFollow);
   }
 
-  const findFollowing = await followQueries.findFollowing(users[0].id);
-  const findFollowers = await followQueries.findFollowers(users[0].id);
-  const findFollowingRequests = await followQueries.findFollowingRequests(
-    users[0].id
+  // Add Users to Feeds
+  const userFollowers = await followQueries.findFollowers(users[0].id);
+  users[0]._addToCommonFeed = await feedQueries.updateFeedUsers(
+    users[0].id,
+    users[0]._feeds[0].name,
+    userFollowers.map((follow) => follow.followerId)
   );
-  const findFollowersRequests = await followQueries.findFollowersRequests(
-    users[0].id
+  users[0]._addToCustomFeed = await feedQueries.updateFeedUsers(
+    users[0].id,
+    users[0]._feeds[1].name,
+    userFollowers
+      .filter((el, i) => i % 2 === 1)
+      .map((follow) => follow.followerId)
   );
-  const findNotFollowing = await followQueries.findNotFollowing(users[0].id);
 
-  // Posts
-  const getMainFeedPosts = await postQueries.getMainFeedPosts(users[0].id);
-  // postQueries.getPost
-  // postQueries.likePost
-  // postQueries.unlikePost
-  // postQueries.onPostCreateComment
+  const queryResults = {
+    NUMBER_OF_USERS,
+    users,
+    follows,
+  };
 
   writeObjToFile({
-    fileName: "db/scriptResults.json",
-    byQuery: {
-      posts: {
-        getMainFeedPosts: getMainFeedPosts,
-        createPost: posts[0],
-      },
-      auth: {
-        createUser: users[0],
-        getUserByNameForLocalStrategy:
-          await authQueries.getUserByNameForLocalStrategy(users[0].username),
-        getUserByIdForSession: await authQueries.getUserByIdForSession(
-          users[0].id
-        ),
-      },
-      profile: {
-        createProfile: profiles[0],
-        getUserProfile: await profileQueries.getUserProfile(users[0].id),
-        updateProfile: await profileQueries.updateProfile(users[0].id, {
-          displayName: "ImUser",
-        }),
-      },
-      follows: {
-        createFollow: follows.sent[1],
-        updateFollowToAccepted: follows.accepted[0],
-        deleteFollowing: follows.removed[0],
-        deleteAcceptedFollowing: follows.removed[1],
-        findFollowing,
-        findFollowingRequests,
-        findFollowers,
-        findFollowersRequests,
-        findNotFollowing,
-      },
-    },
-    afterQueries: {
-      users,
-      profiles,
-      follows,
-    },
+    fileName: "db/queryResults.json",
+    queryResults,
   });
 }
 
-function writeObjToFile(obj) {
-  const fileName = obj.fileName || "db/results.json";
-  fs.writeFile(fileName, JSON.stringify(obj, undefined, 2), (err) => {
-    if (err) {
-      console.error("Error writing to file", err);
-      return;
+export function writeObjToFile(obj, path) {
+  const fileName = path || obj.fileName || "db/queryResults.json";
+  fs.writeFile(
+    fileName,
+    JSON.stringify(obj.queryResults, undefined, 2),
+    (err) => {
+      if (err) {
+        console.error("Error writing to file", err);
+        return;
+      }
+      console.log("Saved results to file!");
     }
-    console.log("Saved results to file!");
-  });
+  );
 }
 
 async function clearTables() {
@@ -153,22 +152,18 @@ async function clearTables() {
   await prisma.post.deleteMany();
   await prisma.feed.deleteMany();
   await prisma.follow.deleteMany();
+  await prisma.account.deleteMany();
   await prisma.profile.deleteMany();
   await prisma.user.deleteMany();
   console.log("Database tables reset.");
 }
 
-async function insertRandomUser(username) {
-  const userDetails = createRandomUser();
-  const passwordHash = await bcrypt.hash("123", 10);
+async function insertRandomUser(username, passwordHash) {
+  const userDetails = generate.randomUser();
   const user = await authQueries.createUser(
     username || userDetails.username,
     passwordHash,
     userDetails.email
   );
-  const profile = await profileQueries.createProfile(
-    user.id,
-    userDetails.profile
-  );
-  return { user, profile };
+  return user;
 }
