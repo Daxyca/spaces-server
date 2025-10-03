@@ -31,7 +31,7 @@ export async function createPost(currentUserId, content) {
       authorId: currentUserId,
     },
     include: {
-      author: filters.AUTHOR_SELECT,
+      author: filters.USER_SELECT,
     },
   });
 }
@@ -89,7 +89,7 @@ export async function onPostCreateComment(authorId, postId, content) {
       content,
     },
     include: {
-      author: filters.AUTHOR_SELECT,
+      author: filters.USER_SELECT,
     },
   });
 }
