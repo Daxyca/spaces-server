@@ -1,6 +1,7 @@
 import * as profileQueries from "../db/profileQueries.js";
 import { uploadToFileSystem } from "../utils/multer.js";
-import fs from "fs";
+import { extname } from "path";
+import { uploadFile } from "../utils/supabase.js";
 
 export async function indexGet(req, res) {
   const currentUser = req.user;
@@ -37,25 +38,17 @@ export function picturePost(req, res, next) {
     if (err) {
       next(err);
     } else {
-      const { path } = req.file;
-      const currentUserId = req.user.id;
-      const { picture: previousPicture } =
-        await profileQueries.getPreviousProfilePicture(currentUserId);
-      if (previousPicture) {
-        // Delete previous picture file
-        fs.unlink("public" + previousPicture, (err) => {
-          if (err) {
-            console.error("Error deleting file:", err);
-            return;
-          }
-          console.log("File deleted successfully!");
-        });
+      try {
+        // req.file =  { fieldname, originalname, encoding, mimetype, buffer, size };
+        const file_path = `${req.user.id}_avatar${extname(req.file.originalname)}`;
+        const pictureRelPath = await uploadFile(req.file, file_path);
+        const picture = `${process.env.AVATARS_BASE_URL}/${pictureRelPath}?t=${parseInt(new Date().getTime() / 1000)}`;
+        // Update db
+        await profileQueries.updateProfilePicture(req.user.id, picture);
+        res.json({ picture });
+      } catch (err) {
+        next(err);
       }
-      const picture = await profileQueries.updateProfilePicture(
-        currentUserId,
-        path.replace("public", "")
-      );
-      res.json(picture);
     }
   });
 }
