@@ -44,6 +44,7 @@ app.use(
       secure:
         !process.env.NODE_ENV.startsWith("dev") &&
         process.env.NODE_ENV !== "test",
+      sameSite: "lax",
     },
   })
 );
