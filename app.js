@@ -32,6 +32,9 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 app.use(express.json());
+const secure =
+  !process.env.NODE_ENV.startsWith("dev") && process.env.NODE_ENV !== "test";
+const sameSite = secure ? "none" : "lax";
 app.use(
   expressSession({
     secret: process.env.COOKIE_SECRET,
@@ -41,10 +44,8 @@ app.use(
     cookie: {
       maxAge: 1 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure:
-        !process.env.NODE_ENV.startsWith("dev") &&
-        process.env.NODE_ENV !== "test",
-      sameSite: "lax",
+      secure,
+      sameSite,
     },
   })
 );
