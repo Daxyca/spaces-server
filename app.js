@@ -21,7 +21,7 @@ const sessionStore = new PrismaSessionStore(prisma, {
 
 // Middlewares
 const corsOptions = {
-  origin: /^https?:\/\/localhost(?::\d{2,4})?$/,
+  origin: process.env.CLIENT_BASE_URL,
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -38,7 +38,13 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: sessionStore,
-    cookie: { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true },
+    cookie: {
+      maxAge: 1 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure:
+        !process.env.NODE_ENV.startsWith("dev") &&
+        process.env.NODE_ENV !== "test",
+    },
   })
 );
 app.use(passport.session());
@@ -56,9 +62,9 @@ app.get("/*path", (req, res) => {
 
 // Error Handlers
 app.use((err, req, res, next) => {
-  if (!err.status) {
-    console.error(err);
-  }
+  // if (!err.status) {
+  console.error(err);
+  // }
   res.status(err.status || 500).json({
     error: {
       code: err.code || "INTERNAL_SERVER_ERROR",
