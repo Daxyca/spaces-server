@@ -11,6 +11,7 @@ import { apiRouter } from "./routes/apiRouter.js";
 import cors from "cors";
 
 export const app = express();
+app.set("trust proxy", 1);
 const __dirname = process.cwd();
 const assetsPath = path.join(__dirname, "public");
 const sessionStore = new PrismaSessionStore(prisma, {
