@@ -18,6 +18,9 @@ export const POSTS_INCLUDE_FOR_FEED = (currentUserId) => {
       where: {
         id: currentUserId,
       },
+      select: {
+        id: true,
+      },
     },
     comments: {
       include: {
