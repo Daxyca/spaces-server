@@ -27,3 +27,10 @@ export async function feedUsersPut(req, res) {
   const feed = await feedQueries.updateFeedUsers(currentUserId, name, userIds);
   res.json(feed);
 }
+
+export async function feedDelete(req, res) {
+  const currentUserId = req.user.id;
+  const name = decodeURIComponent(req.params.feedName);
+  await feedQueries.deleteFeed(currentUserId, name);
+  res.json({});
+}

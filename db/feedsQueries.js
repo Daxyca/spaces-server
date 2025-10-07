@@ -56,3 +56,14 @@ export async function updateFeedUsers(currentUserId, feedName, userIds) {
     },
   });
 }
+
+export async function deleteFeed(currentUserId, feedName) {
+  return await prisma.feed.delete({
+    where: {
+      authorId_name: {
+        authorId: currentUserId,
+        name: feedName,
+      },
+    },
+  });
+}

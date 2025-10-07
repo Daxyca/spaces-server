@@ -7,3 +7,4 @@ feedsRouter.get("/", feedsController.indexGet);
 feedsRouter.post("/", feedsController.indexPost);
 feedsRouter.get("/:feedName", feedsController.feedPostsGet);
 feedsRouter.put("/:feedName", feedsController.feedUsersPut);
+feedsRouter.delete("/:feedName", feedsController.feedDelete);
