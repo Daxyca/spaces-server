@@ -88,9 +88,10 @@ Message {
 |             | GET    | /api/auth/login                | Re-fetch user info                                     | Yes           |
 |             | DELETE | /api/auth/logout               | Delete current user session                            | Yes           |
 | **Follow**  |
-|             | POST   | /api/follow/:userId            | Send follow request                                    | Yes           |
-|             | PATCH  | /api/follow/:userId            | Accept follow request                                  | Yes           |
-|             | DELETE | /api/follow/:userId            | Cancel follow request or unfollow                      | Yes           |
+|             | POST   | /api/follow/following/:userId  | Send follow request                                    | Yes           |
+|             | PATCH  | /api/follow/follower/:userId   | Accept follow request                                  | Yes           |
+|             | DELETE | /api/follow/following/:userId  | Cancel pending follow request or unfollow              | Yes           |
+|             | DELETE | /api/follow/follower/:userId   | Decline a follow request or remove a follower          | Yes           |
 |             | GET    | /api/follow/following          | Get list of current user's followed users              | Yes           |
 |             | GET    | /api/follow/followers          | Get list of current user's followers                   | Yes           |
 |             | GET    | /api/follow/following/requests | Get list of current user's pending following requests  | Yes           |
