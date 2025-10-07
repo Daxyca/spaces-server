@@ -74,7 +74,7 @@ async function main() {
     const sentFollow = await followQueries.createFollow(users[0].id, user.id);
     follows.sent.push(sentFollow);
     if (i % 2 === 0) {
-      const acceptedFollow = await followQueries.updateFollowToAccepted(
+      const acceptedFollow = await followQueries.updateFollowerToAccepted(
         user.id,
         users[0].id
       );
@@ -87,7 +87,7 @@ async function main() {
     );
     follows.otherSent.push(otherSentFollow);
     if (i % 2 === 0) {
-      const otherAcceptedFollow = await followQueries.updateFollowToAccepted(
+      const otherAcceptedFollow = await followQueries.updateFollowerToAccepted(
         users[0].id,
         user.id
       );
