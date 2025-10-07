@@ -19,7 +19,7 @@ export async function createFollow(currentUserId, otherUserId) {
   });
 }
 
-export async function updateFollowToAccepted(currentUserId, otherUserId) {
+export async function updateFollowerToAccepted(currentUserId, otherUserId) {
   return await prisma.follow.update({
     where: {
       followerId_followingId: {
@@ -39,6 +39,17 @@ export async function deleteFollowing(currentUserId, otherUserId) {
       followerId_followingId: {
         followerId: currentUserId,
         followingId: otherUserId,
+      },
+    },
+  });
+}
+
+export async function deleteFollower(currentUserId, otherUserId) {
+  return await prisma.follow.delete({
+    where: {
+      followerId_followingId: {
+        followingId: currentUserId,
+        followerId: otherUserId,
       },
     },
   });
