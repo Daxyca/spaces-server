@@ -9,7 +9,7 @@ export async function indexGet(req, res) {
     return res.json({ get: false, message: "Error! Not logged in." });
   }
   const profile = await profileQueries.getUserProfile(currentUser.id);
-  res.json({ get: true, profile });
+  res.json(profile);
 }
 
 export async function userIdGet(req, res) {
@@ -22,7 +22,7 @@ export async function userIdGet(req, res) {
     currentUser.id,
     otherUserId
   );
-  res.json({ get: true, profile });
+  res.json(profile);
 }
 
 export async function indexPatch(req, res) {
@@ -30,7 +30,7 @@ export async function indexPatch(req, res) {
     ? new Date(req.body.birthDate)
     : undefined;
   const profile = await profileQueries.updateProfile(req.user.id, req.body);
-  res.json({ update: true, message: "Profile updated successfully.", profile });
+  res.json(profile);
 }
 
 export function picturePost(req, res, next) {
