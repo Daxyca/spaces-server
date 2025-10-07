@@ -26,6 +26,9 @@ export const POSTS_INCLUDE_FOR_FEED = (currentUserId) => {
       include: {
         author: USER_SELECT,
       },
+      orderBy: {
+        createdAt: "asc",
+      },
     },
   };
 };

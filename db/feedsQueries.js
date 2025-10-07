@@ -25,6 +25,9 @@ export async function getFeedPosts(currentUserId, feedName) {
       },
     },
     include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId),
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 }
 
