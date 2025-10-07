@@ -41,7 +41,7 @@ async function main() {
     for (let i = 0; i < 2; i++) {
       const post = await postQueries.createPost(
         user.id,
-        `${generate.randomPostContent}\n\n-${user.username}`
+        `${generate.randomPostContent()}\n\n-${user.username}`
       );
       const comment = await postQueries.onPostCreateComment(
         user.id,
