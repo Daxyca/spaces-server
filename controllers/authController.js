@@ -1,29 +1,37 @@
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import * as authQueries from "../db/authQueries.js";
+import { matchedData } from "express-validator";
+import * as authValidators from "../validators/authValidators.js";
 
-export async function registerPost(req, res) {
-  const { username, email, password } = req.body;
-  const passwordHash = await bcrypt.hash(password, 10);
-  const user = await authQueries.createUser(username, passwordHash, email);
-  res.status(201).json({ data: user });
-}
+export const registerPost = [
+  authValidators.registerValidator,
+  async function (req, res) {
+    const { username, email, password } = matchedData(req);
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await authQueries.createUser(username, passwordHash, email);
+    res.status(201).json({ data: user });
+  },
+];
 
-export function loginPost(req, res, next) {
-  passport.authenticate("local", (err, user, info, status) => {
-    if (err) return next(err);
-    if (!user) {
-      const err = new Error("Invalid username or password");
-      err.code = "INVALID_CREDENTIALS";
-      err.status = 401;
-      return next(err);
-    }
-    req.login(user, (err) => {
+export const loginPost = [
+  authValidators.loginValidator,
+  function (req, res, next) {
+    passport.authenticate("local", (err, user, info, status) => {
       if (err) return next(err);
-      res.json({ data: user });
-    });
-  })(req, res, next);
-}
+      if (!user) {
+        const err = new Error("Wrong username or password");
+        err.code = "WRONG_CREDENTIALS";
+        err.status = 401;
+        return next(err);
+      }
+      req.login(user, (err) => {
+        if (err) return next(err);
+        res.json({ data: user });
+      });
+    })(req, res, next);
+  },
+];
 
 export function loginGet(req, res, next) {
   const user = req.user;
