@@ -28,7 +28,9 @@ export async function userIdGet(req, res) {
 export async function indexPatch(req, res) {
   req.body.birthDate = req.body.birthDate
     ? new Date(req.body.birthDate)
-    : undefined;
+    : req.body.birthDate === null
+      ? null
+      : undefined;
   const profile = await profileQueries.updateProfile(req.user.id, req.body);
   res.json(profile);
 }
