@@ -26,8 +26,8 @@ const usernameRegister = createUsernameChain()
 
 const password = body("password")
   .trim()
-  .isLength({ min: 3, max: 16 })
-  .withMessage("Password must be 3 to 16 characters long.");
+  .isLength({ min: 3, max: 32 })
+  .withMessage("Password must be 3 to 32 characters long.");
 
 const email = body("email").trim().isEmail().withMessage("Invalid email.");
 
