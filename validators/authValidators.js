@@ -31,24 +31,12 @@ const password = body("password")
 
 const email = body("email").trim().isEmail().withMessage("Invalid email.");
 
-const loginError = () => {
-  const err = new Error("Invalid login input");
-  err.code = "INVALID_INPUT";
-  return err;
-};
-
-const registerError = () => {
-  const err = new Error("Invalid registration input");
-  err.code = "INVALID_INPUT";
-  return err;
-};
-
 export const loginValidator = [
   [usernameLogin, password],
-  validationErrorsMiddleware(loginError),
+  validationErrorsMiddleware("Invalid login input", "INVALID_INPUT"),
 ];
 
 export const registerValidator = [
   [usernameRegister, password, email],
-  validationErrorsMiddleware(registerError),
+  validationErrorsMiddleware("Invalid registration input", "INVALID_INPUT"),
 ];
