@@ -11,6 +11,16 @@ export async function getUserProfile(currentUserId, otherUserId) {
     },
     include: {
       posts: { include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId) },
+      followers: {
+        where: {
+          followerId: currentUserId,
+        },
+      },
+      following: {
+        where: {
+          followingId: currentUserId,
+        },
+      },
     },
   });
 }
