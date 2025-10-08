@@ -1,4 +1,5 @@
 import * as feedQueries from "../db/feedsQueries.js";
+import { createFeedValidator } from "../validators/otherValidators.js";
 
 export async function indexGet(req, res) {
   const currentUserId = req.user.id;
@@ -6,12 +7,15 @@ export async function indexGet(req, res) {
   res.json(feeds);
 }
 
-export async function indexPost(req, res) {
-  const currentUserId = req.user.id;
-  const name = req.body.name;
-  const feed = await feedQueries.createFeed(currentUserId, name);
-  res.json(feed);
-}
+export const indexPost = [
+  createFeedValidator,
+  async function (req, res) {
+    const currentUserId = req.user.id;
+    const name = req.body.name;
+    const feed = await feedQueries.createFeed(currentUserId, name);
+    res.json(feed);
+  },
+];
 
 export async function feedPostsGet(req, res) {
   const currentUserId = req.user.id;
