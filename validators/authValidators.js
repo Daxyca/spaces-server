@@ -32,14 +32,14 @@ const password = body("password")
 const email = body("email").trim().isEmail().withMessage("Invalid email.");
 
 const loginError = () => {
-  const err = new Error("Invalid login credentials");
-  err.code = "INVALID_CREDENTIALS";
+  const err = new Error("Invalid login input");
+  err.code = "INVALID_INPUT";
   return err;
 };
 
 const registerError = () => {
-  const err = new Error("Invalid registration details");
-  err.code = "INVALID_REGISTRATION_DETAILS";
+  const err = new Error("Invalid registration input");
+  err.code = "INVALID_INPUT";
   return err;
 };
 

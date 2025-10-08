@@ -7,8 +7,8 @@ const feed = body("name")
   .withMessage("Feed name must be 3 to 12 characters long.");
 
 const createFeedError = () => {
-  const err = new Error("Invalid feed name");
-  err.code = "INVALID_FEED_NAME";
+  const err = new Error("Invalid feed input");
+  err.code = "INVALID_INPUT";
   return err;
 };
 
