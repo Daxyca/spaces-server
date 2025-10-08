@@ -13,7 +13,7 @@ followRouter.get("/notfollowing", followController.notFollowingGet);
 followRouter.post("/following/:userId", followController.followingUserIdPost);
 
 // Accept a follower request
-followRouter.patch("/follower/:userId", followController.followerUserIdPatch);
+followRouter.patch("/followers/:userId", followController.followerUserIdPatch);
 
 // Cancel a pending follow request or unfollow
 followRouter.delete(
@@ -22,4 +22,7 @@ followRouter.delete(
 );
 
 // Decline a follow request or remove a follower
-followRouter.delete("/follower/:userId", followController.followerUserIdDelete);
+followRouter.delete(
+  "/followers/:userId",
+  followController.followerUserIdDelete
+);
