@@ -15,7 +15,6 @@ export async function uploadFile(file, file_path) {
       upsert: true,
       contentType: file.mimetype,
     });
-  console.log({ data, error });
   if (error) {
     throw new Error(error);
   } else {
