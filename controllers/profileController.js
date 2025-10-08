@@ -2,6 +2,7 @@ import * as profileQueries from "../db/profileQueries.js";
 import { uploadToFileSystem } from "../utils/multer.js";
 import { extname } from "path";
 import { uploadFile } from "../utils/supabase.js";
+import process from "process";
 
 export async function indexGet(req, res) {
   const currentUser = req.user;

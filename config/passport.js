@@ -3,6 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import bcrypt from "bcryptjs";
 import * as authQueries from "../db/authQueries.js";
+import process from "process";
 
 const localStrategy = new LocalStrategy(async (username, password, done) => {
   try {

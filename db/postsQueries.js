@@ -39,7 +39,7 @@ export async function createPost(currentUserId, content) {
   });
 }
 
-export async function getPost(postId) {}
+// export async function getPost(postId) {}
 
 export async function isPostAlreadyLiked(currentUserId, postId) {
   return await prisma.post.findFirst({

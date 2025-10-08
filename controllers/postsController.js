@@ -14,6 +14,8 @@ export async function indexPost(req, res) {
 }
 
 export async function postIdLikeGet(req, res) {
+  const currentUserId = req.user.id;
+  const postId = req.params.postId;
   const isPostAlreadyLiked = await postsQueries.isPostAlreadyLiked(
     currentUserId,
     postId

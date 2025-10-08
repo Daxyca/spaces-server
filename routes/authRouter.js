@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as authController from "../controllers/authController.js";
 import { isAuth } from "../middleware/authMiddleware.js";
 import passport from "passport";
+import process from "process";
 
 export const authRouter = Router();
 
