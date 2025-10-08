@@ -3,6 +3,8 @@ import { uploadToFileSystem } from "../utils/multer.js";
 import { extname } from "path";
 import { uploadFile } from "../utils/supabase.js";
 import process from "process";
+import { updateProfileValidator } from "../validators/profileValidator.js";
+import { matchedData } from "express-validator";
 
 export async function indexGet(req, res) {
   const currentUser = req.user;
@@ -26,15 +28,19 @@ export async function userIdGet(req, res) {
   res.json(profile);
 }
 
-export async function indexPatch(req, res) {
-  req.body.birthDate = req.body.birthDate
-    ? new Date(req.body.birthDate)
-    : req.body.birthDate === null
-      ? null
-      : undefined;
-  const profile = await profileQueries.updateProfile(req.user.id, req.body);
-  res.json(profile);
-}
+export const indexPatch = [
+  updateProfileValidator,
+  async function (req, res) {
+    const data = matchedData(req);
+    data.birthDate = data.birthDate
+      ? new Date(data.birthDate)
+      : data.birthDate === null
+        ? null
+        : undefined;
+    const profile = await profileQueries.updateProfile(req.user.id, data);
+    res.json(profile);
+  },
+];
 
 export function picturePost(req, res, next) {
   uploadToFileSystem(req, res, async (err) => {
