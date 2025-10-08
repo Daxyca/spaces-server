@@ -4,14 +4,17 @@ export async function followingUserIdPost(req, res) {
   const currentUserId = req.user.id;
   const otherUserId = req.params.userId;
   const follow = await followQueries.createFollow(currentUserId, otherUserId);
-  res.json({ follow });
+  res.json(follow);
 }
 
 export async function followerUserIdPatch(req, res) {
   const currentUserId = req.user.id;
   const otherUserId = req.params.userId;
-  await followQueries.updateFollowerToAccepted(currentUserId, otherUserId);
-  res.json({ follow: true });
+  const follow = await followQueries.updateFollowerToAccepted(
+    currentUserId,
+    otherUserId
+  );
+  res.json(follow);
 }
 
 export async function followingUserIdDelete(req, res) {
