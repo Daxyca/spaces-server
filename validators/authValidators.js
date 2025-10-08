@@ -1,11 +1,12 @@
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import prisma from "../db/prisma.js";
+import validationErrorsMiddleware from "./validationErrorsMiddleware.js";
 
 const createUsernameChain = () => {
   return body("username")
     .trim()
     .isLength({ min: 3, max: 16 })
-    .withMessage("Username must be from 3 to 16 characters long.")
+    .withMessage("Username must be 3 to 16 characters long.")
     .bail()
     .isAlphanumeric()
     .withMessage("Username must be alphanumeric.");
@@ -26,7 +27,7 @@ const usernameRegister = createUsernameChain()
 const password = body("password")
   .trim()
   .isLength({ min: 3, max: 16 })
-  .withMessage("Password should be from 3 to 16 characters long.");
+  .withMessage("Password must be 3 to 16 characters long.");
 
 const email = body("email").trim().isEmail().withMessage("Invalid email.");
 
@@ -42,26 +43,12 @@ const registerError = () => {
   return err;
 };
 
-const catchValidationErrors = (errorFunction) => {
-  return async (req, res, next) => {
-    // Catch validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const err = errorFunction();
-      err.status = 400;
-      err.errors = errors.array();
-      return next(err);
-    }
-    next();
-  };
-};
-
 export const loginValidator = [
   [usernameLogin, password],
-  catchValidationErrors(loginError),
+  validationErrorsMiddleware(loginError),
 ];
 
 export const registerValidator = [
   [usernameRegister, password, email],
-  catchValidationErrors(registerError),
+  validationErrorsMiddleware(registerError),
 ];
