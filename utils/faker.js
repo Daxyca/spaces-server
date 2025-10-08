@@ -8,7 +8,8 @@ export function randomUser() {
   const email =
     uuid.slice(0, 8) + faker.internet.email({ firstName, lastName });
   const password = faker.internet.password();
-  const username = (firstName + lastName).replace(" ", "") + uuid.slice(0, 4);
+  const fullName = `${firstName} ${lastName}`;
+  const username = (firstName + lastName).replace(" ");
   const sexAtBirth = sex[0].toUpperCase() + sex.slice(1);
 
   return {
@@ -19,7 +20,7 @@ export function randomUser() {
       birthDate: faker.date.birthdate(),
       firstName,
       lastName,
-      displayName: `${firstName} ${lastName}`,
+      displayName: fullName,
       sexAtBirth,
     },
   };
