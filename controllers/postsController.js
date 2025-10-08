@@ -1,4 +1,6 @@
 import * as postsQueries from "../db/postsQueries.js";
+import { createPostValidator } from "../validators/postsValidator.js";
+import { createCommentValidator } from "../validators/commentsValidator.js";
 
 export async function indexGet(req, res) {
   const currentUserId = req.user.id;
@@ -6,12 +8,15 @@ export async function indexGet(req, res) {
   res.json(posts);
 }
 
-export async function indexPost(req, res) {
-  const currentUserId = req.user.id;
-  const content = req.body.content;
-  const post = await postsQueries.createPost(currentUserId, content);
-  res.json(post);
-}
+export const indexPost = [
+  createPostValidator,
+  async function (req, res) {
+    const currentUserId = req.user.id;
+    const content = req.body.content;
+    const post = await postsQueries.createPost(currentUserId, content);
+    res.json(post);
+  },
+];
 
 export async function postIdLikeGet(req, res) {
   const currentUserId = req.user.id;
@@ -40,14 +45,17 @@ export async function postIdLikeDelete(req, res) {
   res.json({ unlike: true });
 }
 
-export async function postIdCommentsPost(req, res) {
-  const currentUserId = req.user.id;
-  const postId = req.params.postId;
-  const content = req.body.content;
-  const comment = await postsQueries.onPostCreateComment(
-    currentUserId,
-    postId,
-    content
-  );
-  res.json({ comment });
-}
+export const postIdCommentsPost = [
+  createCommentValidator,
+  async function (req, res) {
+    const currentUserId = req.user.id;
+    const postId = req.params.postId;
+    const content = req.body.content;
+    const comment = await postsQueries.onPostCreateComment(
+      currentUserId,
+      postId,
+      content
+    );
+    res.json(comment);
+  },
+];
