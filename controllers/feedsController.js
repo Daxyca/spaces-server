@@ -1,5 +1,5 @@
 import * as feedQueries from "../db/feedsQueries.js";
-import { createFeedValidator } from "../validators/otherValidators.js";
+import { createFeedValidator } from "../validators/feedsValidators.js";
 
 export async function indexGet(req, res) {
   const currentUserId = req.user.id;
