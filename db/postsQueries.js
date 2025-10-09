@@ -108,3 +108,16 @@ export async function deletePost(currentUserId, postId) {
     }),
   ]);
 }
+
+export async function updatePost(currentUserId, postId, content) {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+      authorId: currentUserId,
+    },
+    data: {
+      content,
+    },
+    include: filters.POSTS_INCLUDE_FOR_FEED(currentUserId),
+  });
+}

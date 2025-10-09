@@ -1,5 +1,5 @@
 import * as postsQueries from "../db/postsQueries.js";
-import { createPostValidator } from "../validators/postsValidator.js";
+import { postValidator } from "../validators/postsValidator.js";
 import { createCommentValidator } from "../validators/commentsValidator.js";
 import { matchedData } from "express-validator";
 
@@ -10,7 +10,7 @@ export async function indexGet(req, res) {
 }
 
 export const indexPost = [
-  createPostValidator,
+  postValidator,
   async function (req, res) {
     const data = matchedData(req);
     const currentUserId = req.user.id;
@@ -73,3 +73,23 @@ export async function postIdDelete(req, res, next) {
     return next(err);
   }
 }
+
+export const postIdPut = [
+  postValidator,
+  async function (req, res, next) {
+    const data = matchedData(req);
+    const currentUserId = req.user.id;
+    const postId = req.params.postId;
+    const content = data.content;
+    try {
+      const post = await postsQueries.updatePost(
+        currentUserId,
+        postId,
+        content
+      );
+      res.json(post);
+    } catch (err) {
+      return next(err);
+    }
+  },
+];

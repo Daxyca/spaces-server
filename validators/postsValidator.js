@@ -8,7 +8,7 @@ const post = body("content")
   .isLength({ max: 1000 })
   .withMessage("Post must be 1000 characters or less.");
 
-export const createPostValidator = [
+export const postValidator = [
   [post],
   validationErrorsMiddleware("Invalid post content", "INVALID_INPUT"),
 ];
