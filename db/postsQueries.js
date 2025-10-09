@@ -1,7 +1,7 @@
 import prisma from "./prisma.js";
 import * as filters from "./filters.js";
 
-export async function getMainFeedPosts(currentUserId) {
+export async function getMainSpacePosts(currentUserId) {
   return await prisma.post.findMany({
     where: {
       author: {

@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import * as authQueries from "./authQueries.js";
 import * as followQueries from "./followQueries.js";
 import * as postQueries from "./postsQueries.js";
-import * as feedQueries from "./feedsQueries.js";
+import * as spaceQueries from "./spacesQueries.js";
 import * as generate from "../utils/faker.js";
 import fs from "fs";
 
@@ -55,17 +55,17 @@ async function main() {
     }
   }
 
-  // Feeds
+  // Spaces
   for (let i = 0; i < NUMBER_OF_USERS; i++) {
     const user = users[i];
-    user._feeds = [];
-    const commonFeed = await feedQueries.createFeed(user.id, "First Feed");
-    const customFeed = await feedQueries.createFeed(
+    user._spaces = [];
+    const commonSpace = await spaceQueries.createSpace(user.id, "First Space");
+    const customSpace = await spaceQueries.createSpace(
       user.id,
-      user.username + "'s Feed"
+      user.username + "'s Space"
     );
-    user._feeds.push(commonFeed);
-    user._feeds.push(customFeed);
+    user._spaces.push(commonSpace);
+    user._spaces.push(customSpace);
   }
 
   // Follows
@@ -104,16 +104,16 @@ async function main() {
     follows.removed.push(removedFollow);
   }
 
-  // Add Users to Feeds
+  // Add Users to Spaces
   const userFollowers = await followQueries.findFollowers(users[0].id);
-  users[0]._addToCommonFeed = await feedQueries.updateFeedUsers(
+  users[0]._addToCommonSpace = await spaceQueries.updateSpaceUsers(
     users[0].id,
-    users[0]._feeds[0].name,
+    users[0]._spaces[0].name,
     userFollowers.map((follow) => follow.followerId)
   );
-  users[0]._addToCustomFeed = await feedQueries.updateFeedUsers(
+  users[0]._addToCustomSpace = await spaceQueries.updateSpaceUsers(
     users[0].id,
-    users[0]._feeds[1].name,
+    users[0]._spaces[1].name,
     userFollowers
       .filter((el, i) => i % 2 === 1)
       .map((follow) => follow.followerId)
@@ -150,7 +150,7 @@ async function clearTables() {
   await prisma.session.deleteMany();
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
-  await prisma.feed.deleteMany();
+  await prisma.space.deleteMany();
   await prisma.follow.deleteMany();
   await prisma.account.deleteMany();
   await prisma.profile.deleteMany();

@@ -4,7 +4,7 @@ beforeAll(async () => {
   // Clear Tables
   await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
-  await prisma.feed.deleteMany();
+  await prisma.space.deleteMany();
   await prisma.follow.deleteMany();
   await prisma.profile.deleteMany();
   await prisma.user.deleteMany();

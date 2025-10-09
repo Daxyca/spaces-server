@@ -85,13 +85,13 @@ CREATE TABLE "public"."Comment" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Feed" (
+CREATE TABLE "public"."Space" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "authorId" TEXT NOT NULL,
 
-    CONSTRAINT "Feed_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Space_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -111,11 +111,11 @@ CREATE TABLE "public"."_CommentLikes" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."_FeedToProfile" (
+CREATE TABLE "public"."_SpaceToProfile" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL,
 
-    CONSTRAINT "_FeedToProfile_AB_pkey" PRIMARY KEY ("A","B")
+    CONSTRAINT "_SpaceToProfile_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateIndex
@@ -131,7 +131,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
 CREATE UNIQUE INDEX "Account_provider_providerUserId_key" ON "public"."Account"("provider", "providerUserId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Feed_authorId_name_key" ON "public"."Feed"("authorId", "name");
+CREATE UNIQUE INDEX "Space_authorId_name_key" ON "public"."Space"("authorId", "name");
 
 -- CreateIndex
 CREATE INDEX "_PostLikes_B_index" ON "public"."_PostLikes"("B");
@@ -140,7 +140,7 @@ CREATE INDEX "_PostLikes_B_index" ON "public"."_PostLikes"("B");
 CREATE INDEX "_CommentLikes_B_index" ON "public"."_CommentLikes"("B");
 
 -- CreateIndex
-CREATE INDEX "_FeedToProfile_B_index" ON "public"."_FeedToProfile"("B");
+CREATE INDEX "_SpaceToProfile_B_index" ON "public"."_SpaceToProfile"("B");
 
 -- AddForeignKey
 ALTER TABLE "public"."Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -164,7 +164,7 @@ ALTER TABLE "public"."Comment" ADD CONSTRAINT "Comment_authorId_fkey" FOREIGN KE
 ALTER TABLE "public"."Comment" ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "public"."Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Feed" ADD CONSTRAINT "Feed_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "public"."Profile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."Space" ADD CONSTRAINT "Space_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "public"."Profile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."_PostLikes" ADD CONSTRAINT "_PostLikes_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -179,7 +179,7 @@ ALTER TABLE "public"."_CommentLikes" ADD CONSTRAINT "_CommentLikes_A_fkey" FOREI
 ALTER TABLE "public"."_CommentLikes" ADD CONSTRAINT "_CommentLikes_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."_FeedToProfile" ADD CONSTRAINT "_FeedToProfile_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Feed"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_SpaceToProfile" ADD CONSTRAINT "_SpaceToProfile_A_fkey" FOREIGN KEY ("A") REFERENCES "public"."Space"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."_FeedToProfile" ADD CONSTRAINT "_FeedToProfile_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."_SpaceToProfile" ADD CONSTRAINT "_SpaceToProfile_B_fkey" FOREIGN KEY ("B") REFERENCES "public"."Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;

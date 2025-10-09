@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-**Goal**: Build Spaces, a social media site where users can interact with others and create their custom feeds.
+**Goal**: Build Spaces, a social media site where users can interact with others and create their custom spaces.
 
 ## 2. Core Features (MVP)
 
@@ -18,7 +18,7 @@
 - Users can create a profile with their personal details and a profile picture _[c]_
 - User's profile page should contain profile information, profile photo, and posts
 - Index page for users, which shows all users and buttons for sending follow requests or indication of pending follow request
-- Users can create custom feeds _[b]_
+- Users can create custom spaces _[b]_
 
 ### Nice-to-have:
 
@@ -46,7 +46,7 @@ Profile {
   posts[Post], comments[Comment],
   likedPosts[Post], likedComments[Comment],
   following[Follow], followers[Follow],
-  feedsCreated[Feed], feedsIncluded[Feed],
+  spacesCreated[Space], spacesIncluded[Space],
   picture?, firstName?, lastName?, birthDate?, bio?, sexAtBirth?, location?,
 }
 
@@ -59,7 +59,7 @@ Comment {
   id, author(Profile.id), post(Post.id), content, createdAt, likes[Profile],
 }
 
-Feed {
+Space {
   id, name, createdAt, author(Profile.id), users[Profile],
 }
 ```
@@ -111,12 +111,12 @@ Message {
 |             | GET    | /api/profile                   | Get current user's profile                             | Yes           |
 |             | PATCH  | /api/profile                   | Update current user's profile                          | Yes           |
 |             | GET    | /api/profile/:userId           | Get specific user's profile                            | Yes           |
-| **Feed**    |
-|             | GET    | /api/feeds                     | Get list of current user's feeds                       | Yes           |
-|             | POST   | /api/feeds                     | Create custom feed                                     | Yes           |
-|             | GET    | /api/feeds/:feedId             | Get posts from custom feed                             | Yes           |
-|             | PATCH  | /api/feeds/:feedId             | Update custom feed                                     | Yes           |
-|             | DELETE | /api/feeds/:feedId             | Delete custom feed                                     | Yes           |
+| **Space**   |
+|             | GET    | /api/spaces                    | Get list of current user's spaces                      | Yes           |
+|             | POST   | /api/spaces                    | Create custom space                                    | Yes           |
+|             | GET    | /api/spaces/:spaceId           | Get posts from custom space                            | Yes           |
+|             | PATCH  | /api/spaces/:spaceId           | Update custom space                                    | Yes           |
+|             | DELETE | /api/spaces/:spaceId           | Delete custom space                                    | Yes           |
 
 ## 5. Architecture & Tech Stack
 

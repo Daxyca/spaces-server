@@ -1,8 +1,8 @@
 import prisma from "./prisma.js";
 import * as filters from "./filters.js";
 
-export async function getUserFeeds(currentUserId) {
-  return await prisma.feed.findMany({
+export async function getUserSpaces(currentUserId) {
+  return await prisma.space.findMany({
     where: {
       authorId: currentUserId,
     },
@@ -12,14 +12,14 @@ export async function getUserFeeds(currentUserId) {
   });
 }
 
-export async function getFeedPosts(currentUserId, feedName) {
+export async function getSpacePosts(currentUserId, spaceName) {
   return await prisma.post.findMany({
     where: {
       author: {
-        feedsIncluded: {
+        spacesIncluded: {
           some: {
             authorId: currentUserId,
-            name: feedName,
+            name: spaceName,
           },
         },
       },
@@ -31,11 +31,11 @@ export async function getFeedPosts(currentUserId, feedName) {
   });
 }
 
-export async function createFeed(currentUserId, feedName) {
-  return await prisma.feed.create({
+export async function createSpace(currentUserId, spaceName) {
+  return await prisma.space.create({
     data: {
       authorId: currentUserId,
-      name: feedName || null,
+      name: spaceName || null,
     },
     include: {
       users: filters.USER_SELECT,
@@ -43,16 +43,16 @@ export async function createFeed(currentUserId, feedName) {
   });
 }
 
-export async function updateFeedUsers(currentUserId, feedName, userIds) {
-  return await prisma.feed.update({
+export async function updateSpaceUsers(currentUserId, spaceName, userIds) {
+  return await prisma.space.update({
     where: {
       authorId_name: {
         authorId: currentUserId,
-        name: feedName,
+        name: spaceName,
       },
     },
     data: {
-      name: feedName,
+      name: spaceName,
       users: {
         set: userIds.map((id) => ({ id })),
       },
@@ -60,12 +60,12 @@ export async function updateFeedUsers(currentUserId, feedName, userIds) {
   });
 }
 
-export async function deleteFeed(currentUserId, feedName) {
-  return await prisma.feed.delete({
+export async function deleteSpace(currentUserId, spaceName) {
+  return await prisma.space.delete({
     where: {
       authorId_name: {
         authorId: currentUserId,
-        name: feedName,
+        name: spaceName,
       },
     },
   });

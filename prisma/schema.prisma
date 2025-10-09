@@ -61,24 +61,24 @@ enum FollowStatus {
 }
 
 model Profile {
-  id            String      @id // user.id
-  user          User        @relation(fields: [id], references: [id])
-  displayName   String
-  posts         Post[]
-  comments      Comment[]
-  feedsCreated  Feed[]      @relation("FeedAuthor")
-  feedsIncluded Feed[]
-  likedPosts    Post[]      @relation("PostLikes")
-  likedComments Comment[]   @relation("CommentLikes")
-  following     Follow[]    @relation("AsFollower")
-  followers     Follow[]
-  picture       String?
-  firstName     String?
-  lastName      String?
-  birthDate     DateTime?
-  bio           String?
-  sexAtBirth    SexAtBirth?
-  location      String?
+  id             String      @id // user.id
+  user           User        @relation(fields: [id], references: [id])
+  displayName    String
+  posts          Post[]
+  comments       Comment[]
+  spacesCreated  Space[]     @relation("SpaceAuthor")
+  spacesIncluded Space[]
+  likedPosts     Post[]      @relation("PostLikes")
+  likedComments  Comment[]   @relation("CommentLikes")
+  following      Follow[]    @relation("AsFollower")
+  followers      Follow[]
+  picture        String?
+  firstName      String?
+  lastName       String?
+  birthDate      DateTime?
+  bio            String?
+  sexAtBirth     SexAtBirth?
+  location       String?
 }
 
 enum SexAtBirth {
@@ -107,11 +107,11 @@ model Comment {
   likes     Profile[] @relation("CommentLikes")
 }
 
-model Feed {
+model Space {
   id        String    @id @default(cuid())
   name      String
   createdAt DateTime  @default(now())
-  author    Profile   @relation("FeedAuthor", fields: [authorId], references: [id])
+  author    Profile   @relation("SpaceAuthor", fields: [authorId], references: [id])
   authorId  String
   users     Profile[]
 

@@ -5,7 +5,7 @@ import { matchedData } from "express-validator";
 
 export async function indexGet(req, res) {
   const currentUserId = req.user.id;
-  const posts = await postsQueries.getMainFeedPosts(currentUserId);
+  const posts = await postsQueries.getMainSpacePosts(currentUserId);
   res.json(posts);
 }
 
