@@ -62,3 +62,14 @@ export const postIdCommentsPost = [
     res.json(comment);
   },
 ];
+
+export async function postIdDelete(req, res, next) {
+  const currentUserId = req.user.id;
+  const postId = req.params.postId;
+  try {
+    const [_, post] = await postsQueries.deletePost(currentUserId, postId);
+    res.json({ post });
+  } catch (err) {
+    return next(err);
+  }
+}
