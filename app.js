@@ -67,7 +67,8 @@ app.get("/", (req, res) => {
   res.send(`
     <html>
       <head>
-        <meta http-equiv="refresh" content="1;url=${process.env.CLIENT_BASE_URL}">
+        <title>Spaces</title>
+        <meta http-equiv="refresh" content="1;url=${process.env.CLIENT_REDIRECT_URL}">
       </head>
       <body style="font-family: sans-serif; text-align: center; padding-top: 40vh;">
         <h3>Backend is now ready...</h3>
