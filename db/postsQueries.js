@@ -98,15 +98,12 @@ export async function onPostCreateComment(authorId, postId, content) {
 }
 
 export async function deletePost(currentUserId, postId) {
-  return await prisma.$transaction([
-    prisma.comment.deleteMany({ where: { postId } }),
-    prisma.post.delete({
-      where: {
-        id: postId,
-        authorId: currentUserId,
-      },
-    }),
-  ]);
+  return await prisma.post.delete({
+    where: {
+      id: postId,
+      authorId: currentUserId,
+    },
+  });
 }
 
 export async function updatePost(currentUserId, postId, content) {

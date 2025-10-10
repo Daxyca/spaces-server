@@ -107,7 +107,7 @@ model Comment {
   updatedAt DateTime  @updatedAt
   author    Profile   @relation(fields: [authorId], references: [id])
   authorId  String
-  post      Post      @relation(fields: [postId], references: [id])
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
   likes     Profile[] @relation("CommentLikes")
 }
