@@ -53,7 +53,19 @@ app.use(
 app.use(passport.session());
 
 // Routes
-app.get("/", (req, res) => res.redirect(process.env.CLIENT_BASE_URL));
+app.get("/", (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <meta http-equiv="refresh" content="1;url=${process.env.CLIENT_BASE_URL}">
+      </head>
+      <body style="font-family: sans-serif; text-align: center; padding-top: 40vh;">
+        <h3>Backend is now ready...</h3>
+        <p>Redirecting to the app...</p>
+      </body>
+    </html>
+  `);
+});
 app.use("/api", apiRouter);
 
 // Static assets
