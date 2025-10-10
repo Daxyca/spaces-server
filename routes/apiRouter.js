@@ -9,6 +9,13 @@ import { isAuth } from "../middleware/authMiddleware.js";
 
 export const apiRouter = Router();
 
+apiRouter.get("/health", (req, res) => {
+  res.json({
+    status: "ready",
+    uptime: process.uptime(),
+    timestamp: Date.now(),
+  });
+});
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/profile", isAuth, profileRouter);
 apiRouter.use("/follow", isAuth, followRouter);
