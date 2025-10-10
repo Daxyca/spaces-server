@@ -7,9 +7,8 @@ commentsRouter.put("/:commentId", commentsController.commentIdPut);
 commentsRouter.delete("/:commentId", commentsController.commentIdDelete);
 
 // Like
-
-commentsRouter.post("/:commentId/like", commentsController.commentIdLikePost);
-commentsRouter.delete(
-  "/:commentId/like",
-  commentsController.commentIdLikeDelete
-);
+// commentsRouter.post("/:commentId/like", commentsController.commentIdLikePost);
+// commentsRouter.delete(
+//   "/:commentId/like",
+//   commentsController.commentIdLikeDelete
+// );
