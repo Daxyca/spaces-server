@@ -8,7 +8,7 @@ const comment = body("content")
   .isLength({ max: 250 })
   .withMessage("Comment must be 250 characters or less.");
 
-export const createCommentValidator = [
+export const commentValidator = [
   [comment],
   validationErrorsMiddleware("Invalid comment content", "INVALID_INPUT"),
 ];

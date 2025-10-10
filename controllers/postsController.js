@@ -1,6 +1,6 @@
 import * as postsQueries from "../db/postsQueries.js";
 import { postValidator } from "../validators/postsValidator.js";
-import { createCommentValidator } from "../validators/commentsValidator.js";
+import { commentValidator } from "../validators/commentsValidator.js";
 import { matchedData } from "express-validator";
 
 export async function indexGet(req, res) {
@@ -48,7 +48,7 @@ export async function postIdLikeDelete(req, res) {
 }
 
 export const postIdCommentsPost = [
-  createCommentValidator,
+  commentValidator,
   async function (req, res) {
     const data = matchedData(req);
     const currentUserId = req.user.id;
