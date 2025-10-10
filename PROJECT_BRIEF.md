@@ -67,7 +67,9 @@ Comment {
 }
 
 Space {
-  id, name, createdAt, updatedAt, author(Profile.id), users[Profile],
+  id, name, createdAt, updatedAt, author(authorId=Profile.id), users[Profile],
+
+  @@unique([authorId, name])
 }
 ```
 
