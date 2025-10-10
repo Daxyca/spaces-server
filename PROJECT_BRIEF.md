@@ -32,11 +32,11 @@
 
 ```
 User {
-  id, username, email, passwordHash, createdAt, Profile?,
+  id, username, email, passwordHash, createdAt, updatedAt, Profile?,
 }
 
 Follow {
-  status{Pending, Accepted}, createdAt, following(Profile.id), follower(Profile.id),
+  status{Pending, Accepted}, createdAt, updatedAt, following(Profile.id), follower(Profile.id),
 
   @@id([followerId, followingId]),
 }
@@ -47,20 +47,21 @@ Profile {
   likedPosts[Post], likedComments[Comment],
   following[Follow], followers[Follow],
   spacesCreated[Space], spacesIncluded[Space],
+  createdAt, updatedAt,
   picture?, firstName?, lastName?, birthDate?, bio?, sexAtBirth?, location?,
 }
 
 Post {
-  id, author(Profile.id), content, createdAt,
+  id, author(Profile.id), content, createdAt, updatedAt,
   likes[Profile], comments[Comment],
 }
 
 Comment {
-  id, author(Profile.id), post(Post.id), content, createdAt, likes[Profile],
+  id, author(Profile.id), post(Post.id), content, createdAt, updatedAt, likes[Profile],
 }
 
 Space {
-  id, name, createdAt, author(Profile.id), users[Profile],
+  id, name, createdAt, updatedAt, author(Profile.id), users[Profile],
 }
 ```
 
@@ -74,7 +75,7 @@ Profile.extend {
 }
 
 Message {
-  id, content,  createdAt, sender(Profile.id), receiver(Profile.id),
+  id, content, createdAt, updatedAt, sender(Profile.id), receiver(Profile.id),
 }
 ```
 
