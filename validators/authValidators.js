@@ -31,12 +31,21 @@ const password = body("password")
 
 const email = body("email").trim().isEmail().withMessage("Invalid email.");
 
+const confirmPassword = body("confirmPassword")
+  .trim()
+  .custom((password, { req }) => {
+    if (password !== req.body.password) {
+      throw new Error("Passwords do not match.");
+    }
+    return true;
+  });
+
 export const loginValidator = [
   [usernameLogin, password],
   validationErrorsMiddleware("Invalid login input", "INVALID_INPUT"),
 ];
 
 export const registerValidator = [
-  [usernameRegister, password, email],
+  [usernameRegister, password, email, confirmPassword],
   validationErrorsMiddleware("Invalid registration input", "INVALID_INPUT"),
 ];
