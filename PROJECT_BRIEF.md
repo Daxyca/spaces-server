@@ -108,8 +108,6 @@ Message {
 | **Comments** |
 |              | PUT    | /api/comments/:commentId       | Update a comment                                       | Yes           |
 |              | DELETE | /api/comments/:commentId       | Delete a comment                                       | Yes           |
-|              | POST   | /api/comments/:commentId/like  | Add like on a comment                                  | Yes           |
-|              | DELETE | /api/comments/:commentId/like  | Remove like on a comment                               | Yes           |
 | **Profile**  |
 |              | GET    | /api/profile                   | Get current user's profile                             | Yes           |
 |              | PATCH  | /api/profile                   | Update current user's profile                          | Yes           |
@@ -120,6 +118,14 @@ Message {
 |              | GET    | /api/spaces/:spaceId           | Get posts from custom space                            | Yes           |
 |              | PATCH  | /api/spaces/:spaceId           | Update custom space                                    | Yes           |
 |              | DELETE | /api/spaces/:spaceId           | Delete custom space                                    | Yes           |
+
+### Temporarily Disabled Endpoints
+
+|              | Method | Route                         | Description              | Auth Required |
+| ------------ | ------ | ----------------------------- | ------------------------ | ------------- |
+| **Comments** |
+|              | POST   | /api/comments/:commentId/like | Add like on a comment    | Yes           |
+|              | DELETE | /api/comments/:commentId/like | Remove like on a comment | Yes           |
 
 ## 5. Architecture & Tech Stack
 
