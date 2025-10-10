@@ -32,7 +32,13 @@
 
 ```
 User {
-  id, username, email, passwordHash, createdAt, updatedAt, Profile?,
+  id, username, email, passwordHash, createdAt, updatedAt, Profile?, Account[]
+}
+
+Account {
+  id,  user(User.id),  userId,  provider,  providerUserId,  passwordHash?,  createdAt,  updatedAt
+
+  @@unique([provider, providerUserId])
 }
 
 Follow {
