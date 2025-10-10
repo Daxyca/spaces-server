@@ -22,7 +22,7 @@ const sessionStore = new PrismaSessionStore(prisma, {
 
 // Middlewares
 const corsOptions = {
-  origin: process.env.CLIENT_BASE_URL,
+  origin: [process.env.CLIENT_BASE_URL, process.env.CLIENT_BASE_URL_2],
   credentials: true,
 };
 app.use(cors(corsOptions));
