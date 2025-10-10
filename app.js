@@ -28,7 +28,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 if (process.env.NODE_ENV === "development") {
   app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
+    console.log(
+      `${new Date(Date.now()).toLocaleString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })} | ${req.method} ${req.url}`
+    );
     next();
   });
 }
