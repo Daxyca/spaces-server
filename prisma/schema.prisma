@@ -47,6 +47,7 @@ model Account {
 model Follow {
   status      FollowStatus @default(Pending)
   createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   following   Profile      @relation(fields: [followingId], references: [id])
   followingId String
   follower    Profile      @relation("AsFollower", fields: [followerId], references: [id])
@@ -79,6 +80,8 @@ model Profile {
   bio            String?
   sexAtBirth     SexAtBirth?
   location       String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 }
 
 enum SexAtBirth {
@@ -90,6 +93,7 @@ model Post {
   id        String    @id @default(cuid())
   content   String
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   author    Profile   @relation(fields: [authorId], references: [id])
   authorId  String
   likes     Profile[] @relation("PostLikes")
@@ -100,6 +104,7 @@ model Comment {
   id        String    @id @default(cuid())
   content   String
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   author    Profile   @relation(fields: [authorId], references: [id])
   authorId  String
   post      Post      @relation(fields: [postId], references: [id])
@@ -111,6 +116,7 @@ model Space {
   id        String    @id @default(cuid())
   name      String
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   author    Profile   @relation("SpaceAuthor", fields: [authorId], references: [id])
   authorId  String
   users     Profile[]
