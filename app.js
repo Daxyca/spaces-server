@@ -53,6 +53,7 @@ app.use(
 app.use(passport.session());
 
 // Routes
+app.get("/", (req, res) => res.redirect(process.env.CLIENT_BASE_URL));
 app.use("/api", apiRouter);
 
 // Static assets
