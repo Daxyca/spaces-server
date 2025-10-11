@@ -10,7 +10,7 @@
     "start": "node server.js",
     "pw": "npx prettier . --write",
     "lint": "npx eslint app.js config/ controllers/ db/ routes/",
-    "di": "node db/initScript.js"
+    "seed": "node db/initScript.js"
   },
   "keywords": [],
   "author": "",
