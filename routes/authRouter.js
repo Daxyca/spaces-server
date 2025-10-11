@@ -17,14 +17,10 @@ authRouter.get(
 authRouter.get(
   "/github/callback",
   passport.authenticate("github", {
-    failureRedirect:
-      (process.env.CLIENT_REDIRECT_URL || process.env.CLIENT_BASE_URL) +
-      "/auth/login",
+    failureRedirect: process.env.CLIENT_REDIRECT_URL + "auth/login",
   }),
   function (req, res) {
-    res.redirect(
-      process.env.CLIENT_REDIRECT_URL || process.env.CLIENT_BASE_URL
-    );
+    res.redirect(process.env.CLIENT_REDIRECT_URL);
   }
 );
 
