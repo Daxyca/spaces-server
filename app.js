@@ -26,7 +26,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV.startsWith("dev")) {
   app.use((req, res, next) => {
     console.log(
       `${new Date(Date.now()).toLocaleString("en-US", {
