@@ -50,7 +50,7 @@ app.use(
   expressSession({
     secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: sessionStore,
     proxy: true,
     cookie: {
