@@ -34,7 +34,7 @@ authRouter.get(
   }
 );
 
-authRouter.post("/complete", async (req, res) => {
+authRouter.post("/complete", async (req, res, next) => {
   try {
     const { token } = req.body;
     const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -46,8 +46,11 @@ authRouter.post("/complete", async (req, res) => {
       return res.json({ success: true });
     });
   } catch (err) {
-    console.error("Auth completion error:", err);
-    res.status(401).json({ success: false });
+    const clientErr = new Error("Authentication error");
+    clientErr.code = "AUTH_COMPLETION_ERROR";
+    clientErr.status = 401;
+    clientErr.details = err;
+    next(clientErr);
   }
 });
 
