@@ -1,7 +1,4 @@
 export function isAuth(req, res, next) {
-  console.log("Received session ID:", req.sessionID);
-  console.log("Session data:", req.session);
-  console.log("Raw cookie header:", req.headers.cookie);
   if (req.isAuthenticated()) {
     next();
   } else {
