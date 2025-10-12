@@ -45,14 +45,13 @@ if (process.env.NODE_ENV !== "test") {
 app.use(express.json());
 const secure =
   !process.env.NODE_ENV.startsWith("dev") && process.env.NODE_ENV !== "test";
-const sameSite = secure ? "none" : "lax";
+const sameSite = "lax";
 app.use(
   expressSession({
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
     store: sessionStore,
-    proxy: true,
     cookie: {
       maxAge: 1 * 24 * 60 * 60 * 1000,
       httpOnly: true,
