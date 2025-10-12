@@ -22,7 +22,7 @@ authRouter.get(
     failureRedirect: process.env.CLIENT_REDIRECT_URL + "auth/login",
   }),
   function (req, res) {
-    res.redirect(process.env.CLIENT_REDIRECT_URL);
+    res.redirect(process.env.CLIENT_REDIRECT_URL + "auth/callback");
   }
 );
 
