@@ -22,37 +22,9 @@ authRouter.get(
     failureRedirect: process.env.CLIENT_REDIRECT_URL + "auth/login",
   }),
   function (req, res) {
-    const user = req.user;
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "2m",
-    });
-    const redirectUrl = new URL(
-      process.env.CLIENT_REDIRECT_URL + "auth/callback"
-    );
-    redirectUrl.searchParams.set("token", token);
-    res.redirect(redirectUrl.toString());
+    res.redirect(process.env.CLIENT_REDIRECT_URL);
   }
 );
-
-authRouter.post("/complete", async (req, res, next) => {
-  try {
-    const { token } = req.body;
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await getUserByIdForSession(payload.id);
-
-    req.login(user, (err) => {
-      if (err) throw err;
-      return res.json({ success: true });
-    });
-  } catch (err) {
-    const clientErr = new Error("Authentication error");
-    clientErr.code = "AUTH_COMPLETION_ERROR";
-    clientErr.status = 401;
-    clientErr.details = err;
-    next(clientErr);
-  }
-});
 
 authRouter.use(isAuth);
 
