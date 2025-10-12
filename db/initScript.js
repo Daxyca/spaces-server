@@ -1,6 +1,7 @@
 import prisma from "./prisma.js";
 import bcrypt from "bcryptjs";
 import * as authQueries from "./authQueries.js";
+import * as profileQueries from "./profileQueries.js";
 import * as followQueries from "./followQueries.js";
 import * as postQueries from "./postsQueries.js";
 import * as spaceQueries from "./spacesQueries.js";
@@ -12,6 +13,7 @@ const PASSWORD_HASH = await bcrypt.hash("123", 10);
 main();
 
 async function main() {
+  console.log("Seeding database.");
   await clearTables();
 
   const NUMBER_OF_USERS = 30;
@@ -164,6 +166,14 @@ async function insertRandomUser(username, passwordHash) {
     username || userDetails.username,
     passwordHash,
     userDetails.email
+  );
+  const profile = await profileQueries.updateProfile(
+    user.id,
+    userDetails.profile
+  );
+  await profileQueries.updateProfilePicture(
+    user.id,
+    userDetails.profile.picture
   );
   return user;
 }

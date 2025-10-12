@@ -8,20 +8,26 @@ export function randomUser() {
   const email =
     uuid.slice(0, 8) + faker.internet.email({ firstName, lastName });
   const password = faker.internet.password();
-  const fullName = `${firstName} ${lastName}`;
   const username = (firstName + lastName).replace(" ");
+  const bio = faker.lorem.paragraph();
   const sexAtBirth = sex[0].toUpperCase() + sex.slice(1);
+  const location = faker.location.country();
+  const picture = faker.image.avatar();
+  console.log({ picture });
 
   return {
     username,
     password,
     email,
     profile: {
-      birthDate: faker.date.birthdate(),
+      displayName: firstName,
+      bio,
       firstName,
       lastName,
-      displayName: fullName,
+      birthDate: faker.date.birthdate(),
       sexAtBirth,
+      location,
+      picture,
     },
   };
 }
