@@ -22,15 +22,7 @@ authRouter.get(
     failureRedirect: process.env.CLIENT_REDIRECT_URL + "auth/login",
   }),
   function (req, res) {
-    console.log("Session ID created:", req.sessionID);
-    console.log("Session data:", req.session);
-    req.session.save((err) => {
-      if (err) {
-        console.error("Session save error:", err);
-      }
-      console.log("Session saved, ID:", req.sessionID);
-      res.redirect(process.env.CLIENT_REDIRECT_URL);
-    });
+    res.redirect(process.env.CLIENT_REDIRECT_URL);
   }
 );
 
